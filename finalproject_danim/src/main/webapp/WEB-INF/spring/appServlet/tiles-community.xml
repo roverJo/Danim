@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+타일즈 설정파일
+-->
+ <!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<!-- 
+		컨트롤러에서 반환하는 ModelAndView 의 setViewName(name)
+		이 아래의 definition name 과 일치하면 include 된 
+		타일즈 화면이 응답된다 
+ -->       
+<tiles-definitions>		
+	<!-- 상속받아 변경부분만 재정의한다 
+		  shop_* : 컨트롤러에서 반환하는 view name이 shop_ 로 시작하면 
+		  아래의 타일즈 설정으로 응답하도록 한다 
+		  * 에 해당하는 정보는 {1} 로 전달받을 수 있다 
+	 -->
+	<definition name="community_*" extends="home">
+		<put-attribute name="main" value="/WEB-INF/views/community/comm_{1}.jsp" />
+	</definition>
+	<!-- 
+			관리자 모드 tiles 설정 
+			home 을 extends 하고 변경하고자 하는 부분만 
+			재설정 ( header 와 main 영역 변경 ) 
+			definition name="admin_*_*"
+			value="/member/admin/{1}/{2}.jsp  
+			{1} 은 첫번째 * , {2}는 두번째 * 
+	 -->
+	<!-- <definition name="admin_*_*" extends="home">
+		<put-attribute name="header" value="/WEB-INF/views/templates/{1}/header.jsp" />
+		<put-attribute name="main" value="/WEB-INF/views/member/admin/{1}/{2}.jsp" />
+	</definition> -->
+</tiles-definitions>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sql Mapper -->
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="message">
+ 	<resultMap type="messageVO" id="messageRecvRM">
+ 		<result column="send_id" property="sendVO.id"/>	
+ 	 	<result column="nickname" property="sendVO.nickname"/>
+ 	 </resultMap>
+ 	 <resultMap type="messageVO" id="messageSendRM">
+ 	 	<result column="send_id" property="recvVO.id"/>
+ 	 	<result column="nickname" property="recvVO.nickname"/>
+ 	 </resultMap>
+ 	<select id="messageList" parameterType="MessageVOAndParamMapVO" resultMap="messageRecvRM">
+ 	select message_no,title,recv_id,send_id,nickname,mess_date,read_acc,read_del,page from(
+		select r.message_no,r.title,r.recv_id,m.send_id,m.nickname,to_char(mess_date, 'yy-mm-dd') as mess_date,r.read_acc,r.read_del,ceil(rownum/#{numberOfContent}) as page from(
+			select id as send_id,nickname from member
+		)m, message r where r.send_id=m.send_id and r.recv_id=#{messageVO.recvVO.id} and r.read_del='N' order by message_no desc
+	) r where page=#{pageNo}
+ 	</select>
+ 	<select id="messageContent" resultMap="messageRecvRM">
+ 		select r.message_no,r.title,r.content,r.recv_id,m.send_id,m.nickname,to_char(mess_date, 'yy-mm-dd am hh:mi:ss') as mess_date,r.read_acc from(
+			select id as send_id,nickname from member
+		)m, message r where r.send_id=m.send_id and r.recv_id=#{recvVO.id} and r.message_no=#{message_no}
+ 	</select>
+ 	<update id="readAcc">
+ 		update message set read_acc=1 where message_no=#{values}
+ 	</update>
+ 	<update id="selectRecvDel">
+ 		update message set read_del='Y' where message_no=#{values}
+ 	</update>
+ 	<delete id="deleteMessage">
+ 		delete message where message_no=#{values} and read_del='Y' and send_del='Y'
+ 	</delete>
+ 	<insert id="sendMessage">
+ 		insert into message(message_no,title,content,recv_id,send_id,mess_date,read_acc,read_del,send_del) 
+		values(message_seq.nextval,#{title},#{content},#{recvVO.id},#{sendVO.id},sysdate,0,'N','N')
+ 	</insert>
+ 	<select id="sendMessageList" parameterType="MessageVOAndParamMapVO" resultMap="messageSendRM">
+ 	select message_no,title,recv_id,send_id,nickname,mess_date,send_del,page from(
+		select r.message_no,r.title,m.recv_id,r.send_id,m.nickname,to_char(mess_date, 'yy-mm-dd') as mess_date,r.send_del,ceil(rownum/#{numberOfContent}) as page from(
+			select id as recv_id,nickname from member
+		) m, message r where r.recv_id=m.recv_id and r.send_id=#{messageVO.sendVO.id} and r.send_del='N' order by message_no desc
+	) r where page=#{pageNo}
+ 	</select>
+ 	<update id="selectSendDel">
+ 		update message set send_del='Y' where message_no=#{values}
+ 	</update>
+ 	<select id="messageSendContent" resultMap="messageSendRM">
+ 		select r.message_no,r.title,r.content,m.recv_id,r.send_id,m.nickname,to_char(mess_date, 'yy-mm-dd am hh:mi:ss') as mess_date from(
+			select id as recv_id,nickname from member
+		)m, message r where r.recv_id=m.recv_id and r.send_id=#{sendVO.id} and r.message_no=#{message_no}
+ 	</select>
+ 	<select id="countNoRead" resultType="int">
+ 		select count(*) from message where recv_id=#{values} and read_acc=0
+ 	</select>
+ 	<select id="recvMessageTotal" resultType="int">
+ 		select count(*) from message where recv_id=#{recvVO.id} and read_del='N'
+ 	</select>
+ 	<select id="sendMessageTotal" resultType="int">
+ 		select count(*) from message where send_id=#{sendVO.id} and send_del='N'
+ 	</select>
+</mapper>

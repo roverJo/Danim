@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sql Mapper -->
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cart">
+	
+	<insert id="insertCart" parameterType="cartVO" >
+		insert into combinecart(combinecart_no,id,bus_no,train_no,lodge_no,foodshop_no)
+		values(combinecart_seq.nextval,#{memberVO.id},#{busVO.bus_no,jdbcType=NUMERIC},#{trainVO.train_no,jdbcType=NUMERIC},#{lodgeVO.lodge_no,jdbcType=NUMERIC},#{bestFoodVO.foodshop_no,jdbcType=NUMERIC})
+	</insert>
+
+	<resultMap type="cartVO" id="cartRM">
+		<result column="bus_no" property="busVO.bus_no"/>
+		<result column="bus_operation_time" property="busVO.operation_time"/>
+		<result column="bus_end_area" property="busVO.end_area"/>
+		<result column="busprice" property="busVO.price"/>
+		<result column="bus_leadtime" property="busVO.leadTime"/>
+		<result column="bustype" property="busVO.busType"/>
+		<result column="terminal_name" property="busVO.terminalVO.terminal_name"/>
+		<result column="train_no" property="trainVO.train_no"/>
+		<result column="train_operation_time" property="trainVO.operation_time"/>
+		<result column="train_end_area" property="trainVO.end_area"/>
+		<result column="trainprice" property="trainVO.price"/>
+		<result column="train_leadtime" property="trainVO.leadTime"/>
+		<result column="traintype" property="trainVO.trainType"/>
+		<result column="station_name" property="trainVO.stationVO.station_name"/>
+		<result column="foodshop_no" property="bestFoodVO.foodshop_no"/>
+		<result column="foodshopname" property="bestFoodVO.shopname"/>
+		<result column="shop_add" property="bestFoodVO.shop_add"/>
+		<result column="foodtype" property="bestFoodVO.foodtype"/>
+		<result column="main_price" property="bestFoodVO.main_price"/>
+		<result column="main_food" property="bestFoodVO.main_food"/>
+		<result column="food_detailarea_name" property="bestFoodVO.detailarea_name"/>
+		<result column="food_local_area" property="bestFoodVO.local_area"/>
+		<result column="lodge_no" property="lodgeVO.lodge_no"/>
+		<result column="lodgeshopname" property="lodgeVO.shopname"/>
+		<result column="shopinfo" property="lodgeVO.shopinfo"/>
+		<result column="lodgetype" property="lodgeVO.lodgetype"/>
+		<result column="lodgeprice" property="lodgeVO.price"/>
+		<result column="lodge_detailarea_name" property="lodgeVO.detailarea_name"/>
+		<result column="lodge_local_area" property="lodgeVO.local_area"/>
+	</resultMap>
+	<select id="getCartList" parameterType="memberAndParamMapVO" resultMap="cartRM">
+		select cc.combinecart_no,b.bus_no,b.operation_time as bus_operation_time,b.end_area as bus_end_area,b.price as busprice,b.leadtime as bus_leadtime,b.bustype,te.terminal_name
+		,t.train_no,t.operation_time as train_operation_time,t.end_area as train_end_area,t.price as trainprice,t.leadtime as train_leadtime,t.traintype,s.station_name
+		,f.foodshop_no,f.shopname as foodshopname,f.shop_add,f.foodtype,f.main_price,f.main_food,f.hits,f.detailarea_name as food_detailarea_name,f.local_area as food_local_area
+		,l.lodge_no,l.shopname as lodgeshopname,l.shopinfo,l.lodgetype,l.price as lodgeprice,l.detailarea_name as lodge_detailarea_name,l.local_area as lodge_local_area
+		from(select combinecart_no,id,bus_no,train_no,foodshop_no,lodge_no,ceil(rownum/#{numberOfContent}) as page 
+		from(select ccb.combinecart_no,ccb.id,ccb.bus_no,ccb.train_no,ccb.foodshop_no,ccb.lodge_no from combinecart ccb,member m where m.id = ccb.id and ccb.id = #{memberVO.id} order by combinecart_no desc))cc,
+		terminal te,bus b,station s,train t,bestfood f,lodge l
+		where b.terminal_no = te.terminal_no(+) 
+		and cc.bus_no = b.bus_no(+) 
+		and t.station_no = s.station_no(+) 
+		and cc.train_no = t.train_no(+) 
+		and cc.foodshop_no = f.foodshop_no(+)
+		and cc.lodge_no = l.lodge_no(+)
+		and page = #{pageNo} order by combinecart_no desc
+	</select>
+	
+	<select id="totalCart" parameterType="memberVO" resultType="int">
+		select count(*) from combinecart cc,member m where cc.id = #{id} and m.id = cc.id 
+	</select>
+	
+	
+</mapper>

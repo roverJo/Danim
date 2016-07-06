@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<!-- MyBatis  DataSource에 대한 설정 및  SQL 정의 xml 에 대한 매핑
+		spring과 연동시에는 spring 설정에서 DataSource(dbcp) 를 정의한다. 
+-->
+<configuration>	
+	<!-- 사용할 클래스에 대한 별칭을 명시한다.  -->
+	<typeAliases>	
+
+	<!-- <typeAlias type="org.kosta.finalproject.model.vo.AreaVO" alias="areaVO"/>
+	<typeAlias type="org.kosta.finalproject.model.vo.TerminalVO" alias="terminalVO"/>	
+	<typeAlias type="org.kosta.finalproject.model.vo.StationVO" alias="stationVO"/>
+	<typeAlias type="org.kosta.finalproject.model.vo.BusVO" alias="busVO"/>
+	<typeAlias type="org.kosta.finalproject.model.vo.TrainVO" alias="trainVO"/>
+	<typeAlias type="org.kosta.finalproject.model.vo.TransportVO" alias="transportVO"/>
+	<typeAlias type="org.kosta.finalproject.model.vo.MemberVO" alias="memberVO"/> -->
+	<package name="org.kosta.finalproject.model.vo"/>
+	</typeAliases>	
+	<!-- mapper.xml 을 명시한다  -->
+	<mappers>	
+	<!-- area -->
+	<mapper resource="mybatis/config/area/area.xml"/>	
+	<mapper resource="mybatis/config/area/detailarea.xml"/>
+	<!-- community -->
+	<mapper resource="mybatis/config/community/community.xml"/>
+	<!-- food -->
+	<mapper resource="mybatis/config/food/bestfood.xml"/>
+	<mapper resource="mybatis/config/food/menu.xml"/>
+	<!-- lodge -->
+	<mapper resource="mybatis/config/lodge/lodge.xml"/>
+	<!-- member -->
+	<mapper resource="mybatis/config/member/member.xml"/>
+	<!-- traffic -->
+	<mapper resource="mybatis/config/traffic/station.xml"/>	
+	<mapper resource="mybatis/config/traffic/terminal.xml"/>	
+	<mapper resource="mybatis/config/traffic/train.xml"/>	
+	<mapper resource="mybatis/config/traffic/bus.xml"/>
+	<!-- notice -->
+	<mapper resource="mybatis/config/notice/notice.xml"/>
+	<!-- cart -->
+	<mapper resource="mybatis/config/cart/cart.xml"/>
+	<!-- admin -->
+	<mapper resource="mybatis/config/admin/admin.xml"/>
+	<!-- message -->
+	<mapper resource="mybatis/config/message/message.xml"/>
+	</mappers>
+	
+</configuration>
+
+
+
+
+
+
+
+
+
+

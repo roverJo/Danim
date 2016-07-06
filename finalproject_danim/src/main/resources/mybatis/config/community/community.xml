@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sql Mapper -->
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="community">
+<!-- community Table Sql문 -->
+	<resultMap type="communityVO" id="commRM">
+		<result column="id" property="memberVO.id"/>
+		<result column="nickname" property="memberVO.nickname"/>
+	</resultMap>
+	
+ 	<select id="getCommlist" resultMap="commRM">
+ 		<!-- select comm_no,timePosted, content,id from(
+			select comm_no,timePosted, content,id,ceil(rownum/#{value}) as page from (
+				select comm_no,to_char(timePosted, 'mm-dd am hh:mi:ss') as timePosted, content,id from community
+				order by comm_no desc
+			)
+		)where page=1 -->
+		select c.comm_no,c.timePosted, c.content, l.likePosted,m.id,m.nickname from(
+			select comm_no,timePosted, content, id,ceil(rownum/#{value}) as page from (
+				select comm_no,to_char(timePosted, 'mm-dd am hh:mi:ss') as timePosted, content, id from community
+				order by comm_no desc
+			)
+		)c, (select comm_no, count(likePosted) as likePosted from commLike GROUP BY comm_no) l, member m 
+		where l.comm_no(+)=c.comm_no and m.id=c.id and c.page=1 order by c.comm_no desc
+ 	</select>
+ 	
+ 	<select id="getCountCommlist" resultType="int">
+ 		select count(*) from community
+ 	</select>
+ 	
+ 	<insert id="registerComm" parameterType="communityVO">
+ 		<selectKey keyProperty="comm_no" order="BEFORE" resultType="int">
+ 			select comm_seq.nextval from dual 
+ 		</selectKey>
+ 		insert into community(comm_no,timePosted,content,id)
+ 		values(#{comm_no},sysdate,#{content},#{memberVO.id})
+ 	</insert>
+ 	
+ 	<insert id="updateLikePosted" parameterType="commLikeVO">
+ 		insert into commLike(comm_no,id,likePosted) values(#{comm_no},#{id},1)
+ 	</insert>
+ 	
+ 	<delete id="deleteLikePosted" parameterType="commLikeVO">
+ 		delete commLike where id=#{id} and comm_no=#{comm_no}
+ 	</delete>
+ 	
+ 	<select id="findLikeByNo" parameterType="int" resultType="int">
+ 		select count(likePosted) as likePosted from commLike where comm_no=#{value} GROUP BY comm_no
+ 	</select>
+ 	
+ 	<select id="findLikeByIdAndNo" parameterType="commLikeVO" resultType="int">
+ 		select count(*) from commLike c where comm_no=#{comm_no} and id=#{id}
+ 	</select>
+ 	
+ 	<select id="findCommByNo" resultMap="commRM">
+ 		select c.comm_no,to_char(c.timePosted, 'mm-dd am hh:mi:ss') as timePosted, c.content, m.id, m.nickname 
+ 		from community c, member m 
+ 		where c.id=m.id and c.comm_no=#{value}
+ 	</select>
+
+	<update id="updateCommunity" parameterType="communityVO">
+		update community set content=#{content} where id=#{memberVO.id} and comm_no=#{comm_no}
+	</update>
+	
+	<delete id="deleteCommunity" parameterType="communityVO">
+		delete community where comm_no=#{comm_no} and id=#{memberVO.id}
+	</delete>
+	
+	
+	
+<!-- Comment Table Sql문 -->
+	<insert id="registerComment" parameterType="commentVO">
+		<selectKey keyProperty="comment_no" order="BEFORE" resultType="int">
+			select comment_seq.nextval from dual
+		</selectKey>
+		insert into commcomment(comment_no,comm_no,id,timePosted,content) 
+		values(#{comment_no},#{communityVO.comm_no},#{communityVO.memberVO.id},sysdate,#{content})
+	</insert>
+	<update id="updateComment" parameterType="commentVO">
+		update commcomment set content=#{content},timePosted=sysdate where comment_no=#{comment_no}
+	</update>
+	<delete id="deleteComment">
+		delete COMMCOMMENT where comment_no=#{value}
+	</delete>
+	
+	
+	<resultMap type="commentVO" id="commentRM">
+		<result column="comm_no" property="communityVO.comm_no"/>
+		<result column="id" property="memberVO.id"/>
+		<result column="nickname" property="memberVO.nickname"/>
+	</resultMap>
+	<select id="getCommentList" resultMap="commentRM" parameterType="int">
+		select c.comment_no,c.comm_no,to_char(c.timePosted,'yyyy-mm-dd hh:mi:ss') as timePosted,m.id,m.nickname,c.content 
+		from commcomment c, member m
+		where c.id=m.id and comm_no=#{value}
+		order by c.comment_no desc
+	</select>
+
+	<select id="getCommentByNo" resultMap="commentRM">
+		select c.comment_no,c.comm_no,m.id,m.nickname,c.content 
+			from commcomment c, member m
+			where c.id=m.id and comment_no=#{value}
+	</select>
+	
+
+
+<!-- Reply Table Sql문 -->	
+	<insert id="registerReply" parameterType="replyVO">
+		<selectKey keyProperty="reply_no" order="BEFORE" resultType="int">
+			select comment_reply_seq.nextval from dual
+		</selectKey>
+		insert into replycomment(reply_no,comment_no,comm_no,id,content)
+		values(#{reply_no},#{commentVO.comment_no},#{commentVO.communityVO.comm_no},#{memberVO.id},#{content})
+	</insert>
+	
+	<resultMap type="replyVO" id="replyRM">
+		<result column="comment_no" property="commentVO.comment_no"/>
+		<result column="comm_no" property="commentVO.communityVO.comm_no"/>
+		<result column="id" property="memberVO.id"/>
+		<result column="nickname" property="memberVO.nickname"/>
+	</resultMap>
+	<select id="getReplyList" resultMap="replyRM">
+		select r.reply_no,r.comment_no,r.comm_no,m.id,m.nickname,r.content 
+		from replycomment r, member m
+		where r.id=m.id and r.comment_no=#{value}
+		order by r.reply_no desc
+	</select>
+	
+	<delete id="deleteReply">
+		delete replycomment where reply_no=#{value}
+	</delete>
+	
+	<update id="updateReply" parameterType="replyVO">
+		update replycomment set content=#{content} where reply_no=#{reply_no}
+	</update>
+	
+	<select id="getLikeRank" resultType="commLikeVO">
+		<!-- select comm_no, likepost as likePosted, rank, content from( -->
+		select comm_no, heart, content, nickname from(
+		select r.comm_no, r.heart, rank() over (order by r.heart desc) as rank, c.content, m.id, m.nickname 
+		from (
+			select comm_no, sum(likePosted) as heart
+			from commLike
+			group by comm_no
+		) r, community c, member m
+		where r.comm_no=c.comm_no and m.id=c.id
+		)
+		where rank <![CDATA[<]]>6
+	</select>
+</mapper>

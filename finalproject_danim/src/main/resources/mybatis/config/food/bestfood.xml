@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sql Mapper -->
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bestfood">
+<!--  	<select id="searchArea" resultType="areaVO">
+ 		select area_name from area
+ 	</select> -->
+ 	
+ 	<select id="searchBestFood" resultType="bestFoodVO" parameterType="bestFoodAndParamMapVO">
+ 		select f.foodshop_no,f.shopname,f.shop_add,f.foodtype,f.area_name,f.detailarea_name,f.main_price,f.main_food,f.main_menu_picture,f.local_area 
+ 		from (select foodshop_no,shopname,shop_add,foodtype,area_name,detailarea_name,main_price,main_food,main_menu_picture,local_area,ceil(rownum/#{numberOfContent}) as page 
+ 		from bestfood where detailarea_name =#{bestFoodVO.detailarea_name} and foodtype=#{bestFoodVO.foodtype} order by foodshop_no desc)f
+ 		where page = #{pageNo}
+ 	</select>
+ 	
+ 	<select id="totalFoodByFoodType" parameterType="bestFoodVO" resultType="int">
+ 		select count(*) from bestfood
+ 		where detailarea_name =#{detailarea_name} and foodtype=#{foodtype}
+ 	</select>
+ 	
+ 	<select id="searchAllBestFood" resultType="bestFoodVO" parameterType="bestFoodAndParamMapVO">
+ 		select f.foodshop_no,f.shopname,f.shop_add,f.foodtype,f.area_name,f.detailarea_name,f.main_price,f.main_food,f.main_menu_picture,f.local_area 
+ 		from (select foodshop_no,shopname,shop_add,foodtype,area_name,detailarea_name,main_price,main_food,main_menu_picture,local_area,ceil(rownum/#{numberOfContent}) as page 
+ 		from bestfood where detailarea_name =#{bestFoodVO.detailarea_name} order by foodshop_no desc)f
+ 		where page = #{pageNo}
+ 	</select>
+ 	
+ 	<select id="totalFood" parameterType="bestFoodVO" resultType="int">
+ 		select count(*) from bestfood
+ 		where detailarea_name =#{detailarea_name}
+ 	</select>
+<!--  	<select id="detailFood" resultType="bestFoodVO">
+ 		select foodshop_no,shopname,shop_add,foodtype,area_name,detailarea_name from bestfood
+ 		where foodshop_no=#{value}
+ 	</select> -->
+ 	
+ 	<update id="updateHits" parameterType="int">
+ 		update bestfood set hits=hits+1 where foodshop_no=#{value}
+ 	</update>
+ 	
+ 	<update id="resetHits">
+ 		update bestfood set hits=0
+ 	</update>
+ 	
+ 		<!-- 음식 탑5리스트 가져오기 -->
+ 	<select id="foodtop5list" resultType="bestFoodVO">
+ 		select shopname,foodtype,detailarea_name,hits rank from
+		(select shopname,foodtype,detailarea_name,hits, rank() over	(order by hits desc) as rank from bestfood )
+   <![CDATA[
+       where rank < 6
+    	]]>
+ 	</select>
+ 	
+ 	<select id="getFoodInfo" resultType="bestFoodVO" parameterType="int">
+ 		select foodshop_no,shopname,shop_add,foodtype,area_name,detailarea_name,local_area,main_price,main_food from bestfood
+ 		where foodshop_no=#{foodshop_no}
+ 	</select>
+ 	
+ 	<!-- 음식점 추가 -->
+ 	<insert id="foodShopRegister" parameterType="bestFoodVO">
+ 		insert into bestfood(foodshop_no,shopname,shop_add,foodtype,main_price,main_food,hits,area_name,detailarea_name,local_area,main_menu_picture)
+		values(food_seq.nextval,#{shopname},#{shop_add},#{foodtype},#{main_price},#{main_food},0,#{area_name},#{detailarea_name},#{local_area},#{main_menu_picture})
+ 	</insert>
+ 	<!-- 모든 음식점 검색 -->
+ 	<select id="allFoodShop" resultType="bestFoodVO">
+ 		select *from bestfood
+ 	</select>
+ 	<!-- 메뉴 추가할 음식점 검색 -->
+ 	<select id="foodshopfind" resultType="bestFoodVO">
+ 		select foodshop_no,shopname,shop_add,foodtype,area_name,detailarea_name,main_price,main_food,local_area,main_menu_picture
+ 		from bestfood 
+ 		where shopname=#{shopname} and area_name=#{area_name} and detailarea_name=#{detailarea_name}
+ 	</select>
+
+	<select id="foodShopFindByNo" resultType="bestFoodVO" >
+	select foodshop_no,shopname,shop_add,foodtype,area_name,detailarea_name,main_price,main_food,local_area
+	from bestfood 
+	where foodshop_no=#{value}
+	</select>
+ 	
+<!--  	<select id="" resultType="bestFoodVO">
+select b.foodshop_no,b.shopname,b.shop_add,b.foodtype,b.area_name,b.detailarea_name,b.main_price,b.main_food
+from bestfood b,foodmenu m
+where b.foodshop_no=m.foodshop_no and m.foodshop_no=#{foodshop_no};
+ 	</select> -->
+ 	<!-- 음식점 수정 -->
+ 	<update id="foodshopupdate" parameterType="bestFoodVO">
+ 		update bestfood set shopname=#{shopname},shop_add=#{shop_add},foodtype=#{foodtype},
+ 		main_price=#{main_price},main_food=#{main_food},main_menu_picture=#{main_menu_picture}
+ 		where foodshop_no=#{foodshop_no}
+ 	</update>
+<!-- 음식점 수정2 사진 없는 업데이트 -->
+ 	<update id="foodshopupdateExcludePic" parameterType="bestFoodVO">
+ 		update bestfood set shopname=#{shopname},shop_add=#{shop_add},foodtype=#{foodtype},
+ 		main_price=#{main_price},main_food=#{main_food}
+ 		where foodshop_no=#{foodshop_no}
+ 	</update>
+ 	
+ <!-- 통합검색 1 -->	
+<!--  	<select id="totalSearchFoodshop2" resultType="bestFoodVO">
+ 		select  foodshop_no,shopname,shop_add,foodtype,area_name,detailarea_name,main_price,main_food,local_area
+ 		where shopname=#{value} or shop_add=#{value} or foodtype=#{value} or area_name=#{value} or detailarea_name=#{value} or local_area=#{value}
+ 	</select> -->
+ 	
+ <!-- 통합검색 -->
+	<select id="totalSearchFoodshop" resultType="bestFoodVO">
+ 		select  foodshop_no,shopname,shop_add,foodtype,area_name,detailarea_name,main_price,main_food,local_area,main_menu_picture
+ 		from bestfood  		
+ 	</select>
+ 	
+ 	<select id="searchFoodshop" resultType="bestFoodVO" parameterType="searchVO">
+		select foodshop_no,shopname,shop_add,foodtype,main_price,main_food,area_name,detailarea_name,local_area,main_menu_picture from(
+			select foodshop_no,shopname,shop_add,foodtype,main_price,main_food,area_name,detailarea_name,local_area,main_menu_picture, ceil(rownum/#{rownum}) as page 
+			from bestfood
+			where shopname like '%' || #{searchWord} || '%' or
+			shop_add like '%' || #{searchWord} || '%' or
+			foodtype like '%' || #{searchWord} || '%' or
+			main_food like '%' || #{searchWord} || '%' or
+			area_name like '%' || #{searchWord} || '%' or
+			detailarea_name like '%' || #{searchWord} || '%' or
+			local_area like '%' || #{searchWord} || '%'
+			order by foodshop_no desc
+		) where page=1
+ 	</select>
+ 	
+ 	<!-- 한줄평 -->
+ 	<resultMap type="foodCmtVO" id="commentRM">
+ 		<result column="foodshop_no" property="bestFoodVO.foodshop_no"/>
+ 		<result column="id" property="memberVO.id"/>
+ 		<result column="nickname" property="memberVO.nickname"/>
+  	</resultMap>
+ 	<select id="getCommentList" resultMap="commentRM">
+ 		select c.foodcmt_no, c.foodshop_no, m.id, m.nickname, c.content
+ 		from foodcmt c, member m, bestfood f
+ 		where c.id=m.id and f.foodshop_no=c.foodshop_no and c.foodshop_no=#{value}
+ 		order by c.foodcmt_no desc
+ 	</select>
+ 	<insert id="registerCmt" parameterType="foodCmtVO">
+ 		<selectKey keyProperty="foodcmt_no" order="BEFORE" resultType="int">
+ 			select foodcmt_seq.nextval from dual
+ 		</selectKey>
+ 		insert into foodcmt(foodcmt_no,foodshop_no,id,content)
+ 		values(#{foodcmt_no},#{bestFoodVO.foodshop_no},#{memberVO.id},#{content})
+ 	</insert>
+ 	<delete id="deleteComment">
+ 		delete foodcmt where foodcmt_no=#{value}
+ 	</delete>
+ 	<update id="updateComment" parameterType="foodcmtVO">
+ 		update foodcmt set content=#{content} where foodcmt_no=#{foodcmt_no}
+ 	</update>
+</mapper>

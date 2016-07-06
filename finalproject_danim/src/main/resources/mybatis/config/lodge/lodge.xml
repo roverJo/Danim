@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sql Mapper -->
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lodge">
+	<resultMap type="lodgeVO" id="lodgeRM">
+		<result column="picture_name" property="lodgePictureVO.picture_name"/>
+		<result column="picture_no" property="lodgePictureVO.picture_no"/>
+	</resultMap>
+	<!-- <select id="lodge" parameterType="lodgeVO" resultMap="lodgeRM">
+		select l.lodge_no, l.shopname, p.picture_no, p.picture_name from lodge l, lodgepicture p
+		where l.lodge_no=p.lodge_no and p.picture_name like '%_a.jpg%' order by picture_no asc
+	</select> -->
+	<select id="searchLodgeByNameAndKind" parameterType="lodgeAndParamMapVO" resultMap="lodgeRM">
+		select l.lodge_no, l.shopname,l.lodgetype,l.detailarea_name, p.picture_no, p.picture_name 
+		from(select lodge_no,shopname,lodgetype,detailarea_name,ceil(rownum/#{numberOfContent}) as page from lodge 
+		where detailarea_name=#{lodgeVO.detailarea_name} and lodgetype=#{lodgeVO.lodgetype} 
+		order by lodge_no desc)l, lodgepicture p
+		where l.lodge_no=p.lodge_no
+		and page = #{pageNo}
+		and p.picture_name like '%_a.jpg%'
+	</select>
+	
+	<select id="totalLodge" parameterType="lodgeVO" resultType="int">
+		select count(*) from lodge where detailarea_name=#{detailarea_name} and lodgetype=#{lodgetype} 
+	</select>
+	
+<!--  	<select id="showlodge" resultType="lodgeVO">
+ 		select * from lodge
+ 		where lodge_no=#{value} 
+ 	</select> -->
+ 	<select id="showlodge" parameterType="lodgeVO" resultMap="lodgeRM">
+ 		select l.lodge_no, l.shopname, l.shopinfo, l.lodgetype, l.price, l.area_name, l.detailarea_name, l.local_area, p.picture_no, p.picture_name from lodge l, lodgepicture p 
+		where l.lodge_no=p.lodge_no and l.lodge_no=#{value} order by picture_no asc
+ 	</select>
+ 	<select id="lodgeNo" resultType="lodgeVO">
+ 		select * from lodge order by lodge_no asc
+ 		<!-- select distinct(lodge_no) from lodge order by lodge_no asc -->
+ 	</select>
+ 	
+ 	<select id="getLodgeInfo" parameterType="int" resultType="lodgeVO">
+ 		select lodge_no, shopname, shopinfo, lodgetype, price, area_name, detailarea_name,local_area from lodge
+		where lodge_no=#{value}  
+ 	</select>
+ 	
+ 	<select id="getLodgePicture" parameterType="string" resultType="lodgePictureVO">
+ 		select p.picture_no,p.picture_name from lodge l,lodgepicture p
+ 		where l.lodge_no = p.lodge_no and p.lodge_no = #{value}
+ 	</select>
+ 	
+ 	 <!-- 숙박 탑5리스트 가져오기 -->
+ 	<select id="lodgetop5list" resultType="lodgeVO">
+ 		select shopname,lodgetype,detailarea_name,hits rank from
+		(select shopname,lodgetype,detailarea_name,hits, rank() over	(order by hits desc) as rank from lodge )
+   <![CDATA[
+       where rank < 6
+    	]]>
+ 	</select>
+ 	
+ 	<select id="allFindLodge" resultType="lodgeVO">
+ 		select lodge_no,shopname,shopinfo,lodgetype,price,area_name,detailarea_name,local_area
+ 		from lodge
+ 	</select>
+ 	
+ 	<insert id="lodgeRegister" parameterType="lodgeVO">
+ 		insert into lodge(lodge_no,shopname,shopinfo,lodgetype,price,area_name,detailarea_name,local_area,hits)
+ 		values(lodge_seq.nextval,#{shopname},#{shopinfo},#{lodgetype},#{price},#{area_name},#{detailarea_name},#{local_area},0)
+ 	</insert>
+ 	
+ 	<select id="lodgefind" resultType="lodgeVO">
+ 		select lodge_no,shopname,shopinfo,lodgetype,price,area_name,detailarea_name,local_area
+ 		from lodge 
+ 		where shopname=#{shopname} and area_name=#{area_name} and detailarea_name=#{detailarea_name}
+ 		and lodgetype=#{lodgetype}
+ 	</select>
+	
+	<select id="findLodgeAllPicture" resultType="lodgePictureVO">
+		select picture_no,lodge_no,picture_name from lodgepicture where lodge_no=#{lodge_no}
+	</select> 	
+	
+	<insert id="lodgeResiPic" parameterType="lodgePictureVO">
+		insert into lodgepicture(picture_no,picture_name,lodge_no)
+		values(lodgepicture_seq.nextval,#{picture_name},#{lodge_no})
+	</insert>
+	
+	<select id="lodge_findPic" resultType="lodgePictureVO">
+		select picture_no,lodge_no,picture_name from lodgepicture where lodge_no=#{value}
+	</select>
+	
+	<update id="lodgePic_update" parameterType="lodgePictureVO">
+		update lodgepicture set picture_name=#{picture_name} where picture_no=#{picture_no}
+	</update>
+	<update id="lodgePic_ExcludePicupdate" parameterType="lodgePictureVO">
+		update lodgepicture set picture_no=#{picture_no} where picture_no=#{picture_no}
+	</update>
+	
+	<!-- 숙박 업데이트 -->
+	<update id="lodgeshopupdate" parameterType="lodgeVO">
+		update lodge set shopname=#{shopname},lodgetype=#{lodgetype},price=#{price},shopinfo=#{shopinfo}
+		where lodge_no=#{lodge_no}
+	</update>
+	
+	<update id="updateHits" parameterType="int">
+ 		update lodge set hits=hits+1 where lodge_no=#{value}
+ 	</update>
+ 	
+ 	<!-- 통합검색 -->
+ 	<select id="totalSearchLodgeshop" resultType="lodgeVO" resultMap="lodgeRM">
+<!--  	select l.lodge_no, l.shopname,l.lodgetype,l.detailarea_name, p.picture_no, p.picture_name 
+		from(select lodge_no,shopname,lodgetype,detailarea_name,ceil(rownum/#{numberOfContent}) as page from lodge 
+		)l, lodgepicture p
+where l.lodge_no=p.lodge_no
+and page =#{pageNo}
+and p.picture_name like '%_a.jpg%' -->
+
+		select l.lodge_no,l.shopinfo,l.local_area,l.area_name,l.shopname,l.lodgetype,l.detailarea_name, p.picture_no, p.picture_name 
+		from lodge l, lodgepicture p where l.lodge_no=p.lodge_no and p.picture_name like '%_a.jpg%'
+ 	</select>
+ 	
+ 	<select id="searchLodgeShop" resultMap="lodgeRM" parameterType="searchVO">
+		select l.lodge_no, l.shopname, l.shopinfo, l.lodgetype, l.price, l.area_name, l.detailarea_name, l.local_area, p.picture_name from(
+			select lodge_no, shopname, shopinfo, lodgetype, price, area_name, detailarea_name, local_area, ceil(rownum/#{rownum}) as page 
+			from lodge
+			where shopname like '%' || #{searchWord} || '%' or
+			shopinfo like '%' || #{searchWord} || '%' or 
+			lodgetype like '%' || #{searchWord} || '%' or 
+			area_name like '%' || #{searchWord} || '%' or 
+			detailarea_name like '%' || #{searchWord} || '%' or 
+			local_area like '%' || #{searchWord} || '%'
+			order by lodge_no desc
+		) l, lodgepicture p where l.page=1 and l.lodge_no=p.lodge_no and p.picture_name like '%_a.jpg%'
+ 	</select>
+ 	
+ 	<!-- 한줄평 -->
+ 	<resultMap type="lodgeCmtVO" id="commentRM">
+ 		<result column="lodge_no" property="lodgeVO.lodge_no"/>
+ 		<result column="id" property="memberVO.id"/>
+ 		<result column="nickname" property="memberVO.nickname"/>
+ 	</resultMap>
+ 	<select id="getCommentList" resultMap="commentRM">
+ 		select c.lodgecmt_no, c.lodge_no, m.id, m.nickname, c.content
+ 		from lodgecmt c, member m,lodge l
+ 		where c.id=m.id and l.lodge_no=c.lodge_no and c.lodge_no=#{value}
+ 		order by c.lodgecmt_no desc
+ 	</select>
+ 	<insert id="registerCmt" parameterType="lodgeCmtVO">
+ 		<selectKey keyProperty="lodgecmt_no" order="BEFORE" resultType="int">
+			select lodgecmt_seq.nextval from dual
+		</selectKey>
+		insert into lodgecmt(lodgecmt_no,lodge_no,id,content)
+		values(#{lodgecmt_no},#{lodgeVO.lodge_no},#{memberVO.id},#{content})
+ 	</insert>
+ 	<delete id="deleteComment">
+ 		delete lodgecmt where lodgecmt_no=#{value}
+ 	</delete>
+ 	<update id="updateComment" parameterType="lodgeCmtVO">
+ 		update lodgecmt set content=#{content} where lodgecmt_no=#{lodgecmt_no}
+ 	</update>
+</mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sql Mapper -->
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="terminal">
+ 	<select id="searchTerminal" parameterType="string" resultType="terminalVO">
+ 		select t.terminal_no,t.terminal_name from terminal t,area a
+ 		where t.area_name = a.area_name and t.area_name = #{value}
+ 	</select>
+ 	
+ 	<select id="getTerminalNo" parameterType="string" resultType="terminalVO">
+ 		select terminal_no,terminal_name from terminal
+ 		where terminal_name = #{value}
+ 	</select>
+ 	
+</mapper>

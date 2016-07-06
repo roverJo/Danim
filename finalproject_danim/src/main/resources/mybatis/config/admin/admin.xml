@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sql Mapper -->
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin">
+ 	<select id="memberList" resultType="memberVO" parameterType="map">
+ 		select id,password,nickname,address,email_add,admin,page from (
+ 			select	id,password,nickname,address,email_add,admin,ceil(rownum/#{numberOfContent}) as page from member where 
+ 		<![CDATA[
+ 			admin<99
+ 		) member where page=#{pageNo}
+ 		]]></select>
+ 	<select id="checkPass" resultType="int">
+ 		select count(*) from member where id=#{id} and password=#{password}
+ 	</select>
+ 	<delete id="deleteMember">
+ 		delete from member where id=#{values}
+ 	</delete>
+ 	<select id="adminList" resultType="memberVO">
+ 		select id,password,nickname,address,email_add,admin from member where admin>=1 and admin
+ 	<![CDATA[
+ 		<99
+ 	]]>
+ 	</select>
+ 	<select id="memberById" resultType="memberVO">
+ 		select id,password,nickname,address,email_add,admin from member where id like '%' || #{values} || '%'
+ 	<![CDATA[
+ 		and admin<99
+ 	]]>
+ 	</select>
+ 	<select id="memberByNick" resultType="memberVO">
+ 		select id,password,nickname,address,email_add,admin from member where nickname like '%' || #{values} || '%'
+ 	<![CDATA[
+ 		and admin<99
+ 	]]>
+ 	</select>
+ 	<select id="checkMemberId" resultType="memberVO">
+ 		select id,password,nickname,address,email_add,admin from member where id=#{values}
+ 	</select>
+ 	<update id="appointAdmin">
+ 		update member set admin=1 where id=#{values}
+ 	</update>
+ 	<update id="fireAdmin">
+ 		update member set admin=0 where id=#{values}
+ 	</update>
+ 	<select id="totalMember" resultType="int">
+		select count(*) from member where
+	<![CDATA[
+		admin<99
+	]]></select>
+	
+	<!-- 탈퇴관련 -->
+	<delete id="deleteReplyCommentById" parameterType="memberVO">
+		delete from replycomment where id = #{id}
+	</delete>
+	
+	<delete id="deleteCommCommentById" parameterType="memberVO">
+		delete from commcomment where id = #{id}
+	</delete>
+	
+	<delete id="deleteCommLikeById" parameterType="memberVO">
+		delete from commLike where id = #{id}
+	</delete>
+	
+	<delete id="deleteCommunityById" parameterType="memberVO">
+		delete from community where id = #{id}
+	</delete>
+	
+	<delete id="deleteNoticeById" parameterType="memberVO">
+		delete from notice where id = #{id}
+	</delete>
+	
+	<delete id="deleteCombineCartById" parameterType="memberVO">
+		delete from combinecart where id = #{id}
+	</delete>
+	
+	<delete id="deleteRecMessageById" parameterType="memberVO">
+		delete from message where recv_id = #{id}
+	</delete>
+	
+	<delete id="deleteSenMessageById" parameterType="memberVO">
+		delete from message where send_id = #{id}
+	</delete>
+</mapper>

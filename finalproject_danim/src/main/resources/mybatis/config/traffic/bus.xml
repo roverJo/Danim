@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sql Mapper -->
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bus">
+ 	<select id="searchEndAreaByTer" parameterType="string" resultType="string">
+ 		select distinct b.end_area from bus b,terminal t
+ 		where b.terminal_no = t.terminal_no and b.terminal_no = #{value}
+ 	</select>
+ 	
+ 	<resultMap type="busVO" id="busRM">
+ 		<result property="terminalVO.terminal_name" column="terminal_name"/>
+ 		<result property="terminalVO.terminal_no" column="terminal_no"/>
+ 		<result property="leadTime" column="leadtime"/> 
+ 		<result property="busType" column="bustype"/>
+ 	</resultMap>
+ 	
+ 	<select id="getBusList" parameterType="busVO" resultMap="busRM">
+ 		select b.bus_no,b.operation_time,b.end_area,t.terminal_no,t.terminal_name,b.price,b.leadtime,b.bustype
+ 		from bus b,terminal t
+ 		where b.terminal_no = t.terminal_no and b.terminal_no = #{terminalVO.terminal_no}
+ 		and b.end_area = #{end_area}
+ 	</select>
+ 	
+ 	<select id="getBusInfo" parameterType="int" resultMap="busRM">
+ 		select b.bus_no,b.operation_time,b.end_area,b.price,b.leadtime,b.bustype,t.terminal_name 
+ 		from bus b,terminal t
+		where b.terminal_no = t.terminal_no and b.bus_no = #{value}
+ 	</select>
+ 	
+ 	<select id="checkDB" parameterType="busVO" resultMap="busRM">
+ 		select b.bus_no 
+ 		from bus b,terminal t
+		where b.terminal_no = t.terminal_no 
+		and t.terminal_name = #{terminalVO.terminal_name}
+		and b.end_area = #{end_area}
+		and b.operation_time = #{operation_time}
+ 	</select>
+ 	
+ 	<insert id="insertBusByExcel" parameterType="busVO">
+ 		insert into bus(bus_no,bustype,terminal_no,end_area,price,leadtime,operation_time)
+		values(bus_seq.nextval,#{busType},#{terminalVO.terminal_no},#{end_area},#{price},#{leadTime},#{operation_time})
+ 	</insert>
+ 	
+ 	<update id="updateBusByExcel" parameterType="busVO">
+ 		update bus set bustype=#{busType},end_area=#{end_area},price=#{price},leadtime=#{leadTime},operation_time=#{operation_time}
+ 		where bus_no=#{bus_no}
+ 	</update>
+ 	
+<!-- 통합검색 원본-->
+ 	 <select id="totalSearchBusTest" resultMap="busRM">
+ 		select b.bus_no,b.operation_time,b.end_area,t.terminal_no,t.terminal_name,b.price,b.leadtime,b.bustype
+		from bus b,terminal t
+		where b.terminal_no = t.terminal_no 
+		and t.terminal_name like '%'||#{value}||'%' or b.end_area like '%'||#{value}||'%'
+ 	</select>
+ 	
+ 	 	<!-- 통합검색 -->
+ 	 <select id="totalSearchBus" resultMap="busRM" parameterType="searchVO">
+ 		select bus_no,operation_time,end_area,terminal_no,terminal_name,price,leadtime,bustype from(
+	 		select bus_no,operation_time,end_area,terminal_no,terminal_name,price,leadtime,bustype,page from(
+				select b.bus_no,b.operation_time,b.end_area,t.terminal_no,t.terminal_name,b.price,b.leadtime,b.bustype, ceil(rownum/#{rownum}) as page from
+		 			(select bus_no,terminal_no,operation_time,end_area,price,leadtime,bustype from bus) b,
+		 			(select terminal_no,terminal_name from terminal) t 
+					where b.terminal_no = t.terminal_no 
+				)
+	 		where terminal_name like '%' || #{searchWord} || '%' or end_area like '%' || #{searchWord} || '%'
+ 		) where page=1
+ 		
+ 	</select>
+</mapper>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sql Mapper -->
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="train">
+ 	<select id="searchEndAreaBySta" parameterType="string" resultType="string">
+ 		select distinct t.end_area from train t,station s
+ 		where t.station_no = s.station_no and t.station_no = #{value}
+ 	</select>
+ 	
+ 	<resultMap type="trainVO" id="trainRM">
+ 		<result property="stationVO.station_name" column="station_name"/>
+ 		<result property="stationVO.station_no" column="station_no"/>
+ 		<result property="leadTime" column="leadtime"/> 
+ 		<result property="trainType" column="traintype"/>
+ 	</resultMap>
+ 	
+ 	<select id="getTrainList" parameterType="trainVO" resultMap="trainRM">
+ 		select t.train_no,t.operation_time,t.end_area,s.station_no,s.station_name,t.price,t.leadtime,t.traintype
+ 		from train t,station s
+ 		where t.station_no = s.station_no and t.station_no = #{stationVO.station_no}
+ 		and t.end_area = #{end_area}
+ 	</select>
+ 	
+ 	<select id="getTrainInfo" parameterType="int" resultMap="trainRM">
+ 		select t.train_no,t.operation_time,t.end_area,t.price,t.leadtime,t.traintype,s.station_name 
+ 		from train t,station s
+		where t.station_no = s.station_no and t.train_no = #{value}
+ 	</select>
+ 	
+ 	<select id="checkDBTrain" parameterType="trainVO" resultMap="trainRM">
+ 		select t.train_no 
+ 		from train t,station s
+		where t.station_no = s.station_no 
+		and s.station_name = #{stationVO.station_name}
+		and t.end_area = #{end_area}
+		and t.operation_time = #{operation_time}
+ 	</select>
+ 	
+ 	<insert id="insertTrainByExcel" parameterType="trainVO">
+ 		insert into train(train_no,traintype,station_no,end_area,price,leadtime,operation_time)
+		values(train_seq.nextval,#{trainType},#{stationVO.station_no},#{end_area},#{price},#{leadTime},#{operation_time})
+ 	</insert>
+ 	
+ 	<!-- 통합검색 -->
+ 		<select id="totalSearchTrainTest" resultMap="trainRM">
+ 		select t.train_no,t.operation_time,t.end_area,s.station_no,s.station_name,t.price,t.leadtime,t.traintype
+ 		from train t,station s where t.station_no = s.station_no
+ 		and s.station_name like '%'||#{value}||'%' or t.end_area like '%'||#{value}||'%' 
+ 	</select>
+ 	
+	<select id="totalSearchTrain" resultMap="trainRM" parameterType="searchVO">
+ 		select train_no,operation_time,end_area,station_no,station_name,price,leadtime,traintype from(
+		select t.train_no,t.operation_time,t.end_area,s.station_no,s.station_name,t.price,t.leadtime,t.traintype, ceil(rownum/#{rownum}) as page from
+ 			(select train_no,operation_time,end_area,station_no,price,leadtime,traintype from train) t,
+ 			(select station_no,station_name from station) s 
+			where t.station_no = s.station_no
+			and s.station_name like '%'||#{searchWord}||'%' or t.end_area like '%'||#{searchWord}||'%' 
+			)
+ 		where page=1
+ 	</select>
+</mapper>

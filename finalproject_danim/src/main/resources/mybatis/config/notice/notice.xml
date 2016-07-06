@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sql Mapper -->
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	<mapper namespace="notice">
+	
+	<insert id="write" parameterType="noticeVO">
+	<selectKey keyProperty="noticeno" resultType="int" order="BEFORE">
+			select notice_no_seq.nextval from dual
+	</selectKey>
+	insert into notice(notice_no,timePosted,title,content,id)
+	values(#{noticeno},sysdate,#{title},#{content},#{memberVO.id})
+	</insert>
+	
+	<select id="totalContent" resultType="int">
+		select count(*) from notice
+	</select>
+	
+	<resultMap type="noticeVO" id="noticeRM">
+		<result property="noticeno" column="notice_no" />
+		<result property="timePosted" column="timePosted" />
+		<result property="content" column="content" />
+		<result property="memberVO.id" column="id" />
+		<result property="memberVO.nickname" column="nickname" />
+		<result property="memberVO.admin" column="admin" />
+	</resultMap>
+	
+	<select id="getNoticeList" resultMap="noticeRM" parameterType="map">
+		select n.notice_no,n.timePosted,n.title,n.id,m.nickname from (
+		select notice_no,timePosted,title,ceil(rownum/#{numberOfContent}) as page,id from (
+		select notice_no,title,to_char(timePosted,'YYYY.MM.DD') as timePosted,
+		id from notice order by notice_no desc)) 
+		n,member m where n.id=m.id and page=#{pageNo}
+	</select>
+	
+	<select id="content" resultMap="noticeRM">
+		select n.notice_no,n.title,to_char(n.timePosted,'YYYY.MM.DD HH:mm:ss') as timePosted,
+		n.content,m.id,m.nickname from notice n,member m 
+		where n.id=m.id and notice_no=#{value}
+	</select>
+	
+	<delete id="deleteNotice">
+		delete from notice where notice_no=#{value}
+	</delete>
+	
+	<update id="updateNotice" parameterType="noticeVO">
+		update notice set title=#{title},content=#{content}
+		where notice_no=#{noticeno}
+	</update>
+	
+</mapper>
