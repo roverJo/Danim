@@ -62,3 +62,5 @@ select message_no,title,recv_id,send_id,nickname,mess_date,send_del,page from(
 			select id as recv_id,nickname from member
 		) m, message r where r.recv_id=m.recv_id and r.send_id='java' and r.send_del='N' order by message_no desc
 	) r where page=1
+	
+select * from message where recv_id='test'

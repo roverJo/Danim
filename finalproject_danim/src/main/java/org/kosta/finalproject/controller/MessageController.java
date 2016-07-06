@@ -1,7 +1,5 @@
 package org.kosta.finalproject.controller;
 
-import java.util.List;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -141,6 +139,24 @@ public class MessageController {
 		messageService.sendMessage(messageVO);
 		return new ModelAndView("message_message_result");
 	}
+	@RequestMapping(value="login_message_selectRead.do",method = RequestMethod.POST)
+	@ResponseBody
+	public String selectRead(String no[]){
+		String check="N";
+		if(no.length!=0){
+			for(int i =0; i < no.length; i++){
+			messageService.readAcc(Integer.parseInt(no[i]));
+			}
+			check="Y";
+		}
+		return check;
+	}
+	@RequestMapping(value="login_message_countNoRead.do",method = RequestMethod.POST)
+	@ResponseBody
+	public int countNoRead(String id){
+		int count=messageService.countNoRead(id);
+		return count;
+	}
 	
 	/* 커뮤니티 게시판 - 쪽지 보내기 */
 	@RequestMapping("login_message_comm_send.do")
@@ -156,18 +172,5 @@ public class MessageController {
 		messageVO.setSendVO(mvo);
 		messageService.sendMessage(messageVO);
 		return new ModelAndView("message_comm_message_result");
-	}
-	
-	@RequestMapping(value="login_message_selectRead.do",method = RequestMethod.POST)
-	@ResponseBody
-	public String selectRead(String no[]){
-		String check="N";
-		if(no.length!=0){
-			for(int i =0; i < no.length; i++){
-			messageService.readAcc(Integer.parseInt(no[i]));
-			}
-			check="Y";
-		}
-		return check;
 	}
 }

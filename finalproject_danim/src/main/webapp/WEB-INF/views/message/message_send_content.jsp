@@ -21,10 +21,10 @@
 	} 
 </script>
 <!-- header -->
-<div class="modal-header">
-    <!-- 닫기(x) 버튼 -->
+<div class="modal-header" align="center">
+    <!-- 닫기(x) 버튼
   <button type="button" class="close" data-dismiss="modal">×</button>
-  <!-- header title -->
+  header title -->
   <h3 class="modal-title">보낸쪽지 상세보기</h3>
 </div>
 <!-- body -->

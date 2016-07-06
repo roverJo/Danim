@@ -50,7 +50,7 @@
 	<table class="table custab" style="width:600px;">
 		<thead align="center">
 			<tr>
-			<th><input type="checkbox" name="all" id="selectAll"> 전체선택</th>
+			<th style="width: 90px;"><input type="checkbox" name="all" id="selectAll"> 전체선택</th>
 			<th>받은사람</th><th>제목</th><th>날짜</th>
 			</tr>
 		</thead>
@@ -59,7 +59,7 @@
 		<c:when test="${lvo.messageList!=null}">
 		<c:forEach items="${lvo.messageList}" var="list">
 		<tr>
-		<td><input type="checkbox" name="select" value="${list.message_no}"></td>
+		<td align="center"><input type="checkbox" name="select" value="${list.message_no}"></td>
 		
 		<td>${list.recvVO.nickname}</td>
 		<td><a href="${initParam.root}login_message_sendContent.do?message_no=${list.message_no}">${list.title}</a></td>

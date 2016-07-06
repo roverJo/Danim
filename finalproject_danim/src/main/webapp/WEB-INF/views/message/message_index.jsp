@@ -78,7 +78,7 @@
 	<table class="table custab" style="width:600px;">
 		<thead align="center">
 			<tr>
-			<th><input type="checkbox" name="all" id="selectAll"> 전체선택</th>
+			<th style="width: 90px;"><input type="checkbox" name="all" id="selectAll"> 전체선택</th>
 			<th>보낸사람</th><th>제목</th><th>날짜</th>
 			</tr>
 		</thead>
@@ -87,7 +87,7 @@
 		<c:when test="${lvo.messageList!=null}">
 		<c:forEach items="${lvo.messageList}" var="list">
 		<tr>
-		<td><input type="checkbox" name="select" value="${list.message_no}"></td>
+		<td align="center"><input type="checkbox" name="select" value="${list.message_no}"></td>
 		<c:if test="${list.read_acc==0}">
 <%-- <td><b><a href="#" onclick="window.open('${initParam.root}message_replyReady.do?sendId=${list.sendVO.id}', 'popup','resizable=true,toolbar=no,width=500,height=400,left=300,top=150');return false;" target="_blank">${list.sendVO.nickname}</a></b></td> --%>
 		<td><a style="color: #2196F3;" data-toggle="modal" href="${initParam.root}login_message_replyReady.do?sendId=${list.sendVO.id}" data-target="#myModal"><b>${list.sendVO.nickname}</b></a></td>

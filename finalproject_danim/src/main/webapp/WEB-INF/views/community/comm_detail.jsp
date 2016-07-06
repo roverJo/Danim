@@ -283,8 +283,7 @@ $(document).ready(function() {
 			       delTr.remove();
 			   }
 			       
-			    //delComment.remove();
-			    delComment.parent().remove();
+			    delComment.remove();
 			    //$('#deleteCommentForm input[name*=commentNo]').val($commentNo);
 			    //$('#deleteCommentForm').submit();
 			} else {
@@ -346,10 +345,9 @@ $(document).ready(function() {
 			//$("#commentEditor").remove();
 			//부모의 하단에 댓글달기 창을 삽입
 			var commentEditor = '<tr id="commentEditor">'+
-			                        '<td style="width:1%"> </td>'+
-			                        '<td style="width:99%" align="right">'+
+			                        '<td align="right">'+
 			                            '<span class="form-inline" role="form">'+
-			                                    '<textarea id="replyEditText" name="replyEditText" class="form-control" style="width:98%" rows="4" placeholder="답글을 입력하세요">'+content.text()+'</textarea>'+
+			                                    '<textarea id="replyEditText" name="replyEditText" class="form-control" style="width:100%" rows="4" placeholder="답글을 입력하세요">'+content.text()+'</textarea>'+
 			                                    '<div class="form-group">'+
 			                                        '<button type="button" id="replyEditSubmit" class="btn" style="background-color:#3db39e; color:white;" title='+$commentNo+'>댓글달기</button>'+
 			                                    '</div>'+
@@ -405,7 +403,8 @@ $(document).ready(function() {
 </div> -->
 <!-- body -->
 <!-- <div class="modal-body"> -->
-<div class="container">
+<div class="addHeight"></div>
+<div class="container" id="commentTableDiv">
 	<table class="list">
 		<tbody>			
 			<tr>

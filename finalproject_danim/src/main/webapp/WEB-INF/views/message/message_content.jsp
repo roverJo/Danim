@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <script type="text/javascript" src="${initParam.root}resources/js/backfix.min.js"></script>
-<script src="${initParam.root}resources/js/jquery-1.12.4.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -29,15 +28,15 @@
 	});
 	 bajb_backdetect.OnBack = function(){
 		window.history.back=function(){
-			document.location="${initParam.root}message_index.do";
+			document.location="${initParam.root}login_message_index.do";
 		}
 	} 
 </script>
 <!-- header -->
-<div class="modal-header">
-    <!-- 닫기(x) 버튼 -->
+<div class="modal-header" align="center">
+    <!-- 닫기(x) 버튼
   <button type="button" class="close" data-dismiss="modal">×</button>
-  <!-- header title -->
+  header title -->
   <h3 class="modal-title">받은쪽지 상세보기</h3>
 </div>
 <!-- body -->

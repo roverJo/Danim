@@ -111,8 +111,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<selectKey keyProperty="reply_no" order="BEFORE" resultType="int">
 			select comment_reply_seq.nextval from dual
 		</selectKey>
-		insert into replycomment(reply_no,comment_no,comm_no,id,content)
-		values(#{reply_no},#{commentVO.comment_no},#{commentVO.communityVO.comm_no},#{memberVO.id},#{content})
+		insert into replycomment(reply_no,comment_no,comm_no,id,timePosted,content)
+		values(#{reply_no},#{commentVO.comment_no},#{commentVO.communityVO.comm_no},#{memberVO.id},sysdate,#{content})
 	</insert>
 	
 	<resultMap type="replyVO" id="replyRM">
