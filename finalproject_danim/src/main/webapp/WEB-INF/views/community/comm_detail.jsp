@@ -405,6 +405,7 @@ $(document).ready(function() {
 <!-- <div class="modal-body"> -->
 <div class="addHeight"></div>
 <div class="container" id="commentTableDiv">
+<h5>상세 내용</h5>
 	<table class="list">
 		<tbody>			
 			<tr>
@@ -421,9 +422,9 @@ $(document).ready(function() {
 		</tbody>
 	</table>
 <!-- </div> -->
-
+</div>
 	<div class="addHeight"></div>
-	
+<div class="container" id="commentTableDiv">	
 <!-- <div class="modal-footer"> -->	
 	<!-- <table>
 	<thead>
@@ -448,7 +449,7 @@ $(document).ready(function() {
 	</form>
 	</c:if>
 	
-	<div id="commentTableDiv">
+	<!-- <div id="commentTableDiv"> -->
 	<table id="commentTable" class="table table-condensed" style="text-align: left;">
 		<c:forEach items="${commentList}" var="item">
 			<tr id="r1" name="commentParentCode" title="${item.comment_no}">
@@ -485,6 +486,6 @@ $(document).ready(function() {
 					<!-- </table> -->
 		</c:forEach>
 	</table>
-	</div>
+	<!-- </div> -->
 <!-- </div> -->
 </div>

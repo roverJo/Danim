@@ -121,7 +121,7 @@ select r.reply_no,r.comment_no,r.comm_no,m.id,m.nickname,r.content
 		order by r.reply_no desc		
 		
 
----------picture table 추가(2차)---------
+---------안 씀---------
 drop sequence comm_pic_seq;
 create sequence comm_pic_seq nocache;
 

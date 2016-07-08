@@ -46,16 +46,17 @@ class="org.mybatis.spring.SqlSessionFactoryBean">
  <constructor-arg ref="sqlSessionFactory"></constructor-arg>
 </bean>
 <!-- aop 설정 --> 
-<aop:aspectj-autoproxy/>
+<!-- <aop:aspectj-autoproxy/> -->
 <!-- <bean id="loggingAspect" class="org.kosta.finalproject.aop.LoggingAspect" /> -->
 
 <!-- 트랜잭션 설정 -->
+<!-- 
 <bean id="transactionManager" 
 class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 	<property name="dataSource" ref="dataSource"/>
 </bean>
 <tx:annotation-driven transaction-manager="transactionManager"/> 
-
+ -->
 <!-- 페이징빈 설정정보 
 	numberOfContent : 한페이지에 표현될 게시물수 
 	numberOfPage : 페이지 그룹당 페이지수 

@@ -67,6 +67,39 @@
 			$("#lodgeManagementForm :input[name=area_name]").val($("#areaName").val());
 			$("#lodgeManagementForm :input[name=detailarea_name]").val($("#detailareaName").val());
 			$("#lodgeManagementForm :input[name=lodgetype]").val($("#lodgeKind").val());
+			
+			if($("#lodgeManagementForm :input[name=shopname]").val()==""){
+				alert("숙소 이름을 입력하세요");
+				return false;
+			}
+			if($("#lodgeManagementForm :input[name=price]").val()==""){
+				alert("숙소 가격을 입력하세요");
+				return false;
+			}
+			if($("#lodgeManagementForm :input[name=shopinfo]").val()==""){
+				alert("숙소 정보를 입력하세요");
+				return false;
+			}
+			if($("#lodgeManagementForm :input[name=area_name]").val()==""){
+				alert("지역을 선택하세요");
+				return false;
+			}
+			if($("#lodgeManagementForm :input[name=detailarea_name]").val()==""){
+				alert("상세지역을 선택하세요");
+				return false;
+			}
+			if($("#lodgeManagementForm :input[name=lodgetype]").val()==""){
+				alert("숙박종류를 선택하세요");
+				return false;
+			}
+			if($("#lodgeManagementForm :input[name=local_area]").val()==""){
+				alert("지역구를 입력하세요");
+				return false;
+			}
+			if(isNaN($("#lodgeManagementForm :input[name=price]").val())==true){
+				alert("숙박값은 숫자를 입력하세요");
+				return false;
+			}			
 		});
 		
 	});

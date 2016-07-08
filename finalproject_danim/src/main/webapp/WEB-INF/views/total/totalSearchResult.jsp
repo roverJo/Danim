@@ -96,7 +96,9 @@ $(document).ready(function() {
 				<th>가격</th>
 				<th>소요시간</th>
 				<th>좌석</th>
+				<c:if test="${sessionScope.mvo!=null }">
 				<th>선택</th>
+				</c:if>
 			</tr>
 			<c:forEach items="${requestScope.busList }" var="list">
 				<tr>
@@ -106,7 +108,9 @@ $(document).ready(function() {
 					<td>${list.price}</td>
 					<td>${list.leadTime}</td>
 					<td>${list.busType}</td>
-					<td align="center"><input type="radio" name ="traffic_no" value="${list.bus_no}">${list.bus_no}</td>
+					<c:if test="${sessionScope.mvo!=null }">
+					<td align="center"><input type="radio" name ="traffic_no" value="${list.bus_no}"></td>
+					</c:if>
 				</tr>
 			</c:forEach>
 		</table>
@@ -140,7 +144,9 @@ $(document).ready(function() {
 				<th>가격</th>
 				<th>소요시간</th>
 				<th>기차종류</th>
+				<c:if test="${sessionScope.mvo!=null }">
 				<th>선택</th>
+				</c:if>
 			</tr>
 			<c:forEach items="${requestScope.trainList }" var="list">
 				<tr>
@@ -150,7 +156,9 @@ $(document).ready(function() {
 					<td>${list.price}</td>
 					<td>${list.leadTime}</td>
 					<td>${list.trainType}</td>
+					<c:if test="${sessionScope.mvo!=null }">
 					<td align="center"><input type="radio" name ="traffic_no" value="${list.train_no}"></td>
+					</c:if>
 				</tr>
 			</c:forEach>
 		</table>

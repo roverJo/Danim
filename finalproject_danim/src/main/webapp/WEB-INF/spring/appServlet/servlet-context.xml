@@ -50,47 +50,21 @@ class="org.springframework.web.servlet.view.UrlBasedViewResolver">
 </bean>
 <!-- 음식메인사진 -->
 <bean id="uploadFoodShopPath" class="java.lang.String">
-	 <!-- <constructor-arg value="C:\\java-kosta\\spring-workspace2\\finalproject_danim\\src\\main\\webapp\\resources\\img\\food\\" /> --> 
-	 <constructor-arg value="C:\\java-kosta\\final-workspace\\finalproject_danim\\src\\main\\webapp\\resources\\img\\food\\" /> 
+	 <constructor-arg value="C:\\java-kosta\\spring-workspace2\\finalproject_danim\\src\\main\\webapp\\resources\\img\\food\\" /> 
+	 <!-- <constructor-arg value="C:\\java-kosta\\final-workspace\\finalproject_danim\\src\\main\\webapp\\resources\\img\\food\\" /> --> 
 	<!-- <constructor-arg value="C:\\Users\\kosta\\git\\danim\\finalproject_danim\\src\\main\\webapp\\resources\\img\\food\\" /> -->
 	
 </bean>
 <!-- 메뉴 음식 사진-->
 <bean id="uploadFoodMenuPath" class="java.lang.String">
-	<!-- <constructor-arg value="C:\\java-kosta\\spring-workspace2\\finalproject_danim\\src\\main\\webapp\\resources\\img\\food\\menu\\" /> -->
-	<constructor-arg value="C:\\java-kosta\\final-workspace\\finalproject_danim\\src\\main\\webapp\\resources\\img\\food\\menu\\" />
+	<constructor-arg value="C:\\java-kosta\\spring-workspace2\\finalproject_danim\\src\\main\\webapp\\resources\\img\\food\\menu\\" />
+	<!-- <constructor-arg value="C:\\java-kosta\\final-workspace\\finalproject_danim\\src\\main\\webapp\\resources\\img\\food\\menu\\" /> -->
 	<!-- <constructor-arg value="C:\\Users\\kosta\\git\\danim\\finalproject_danim\\src\\main\\webapp\\resources\\img\\food\\menu\\" /> -->
 </bean>
 <!-- 숙박 사진 -->
 <bean id="uploadLodgePicPath" class="java.lang.String">
-	<!-- <constructor-arg value="C:\\java-kosta\\spring-workspace2\\finalproject_danim\\src\\main\\webapp\\resources\\img\\lodge\\" /> -->
-	<constructor-arg value="C:\\java-kosta\\final-workspace\\finalproject_danim\\src\\main\\webapp\\resources\\img\\lodge\\" />
+	<constructor-arg value="C:\\java-kosta\\spring-workspace2\\finalproject_danim\\src\\main\\webapp\\resources\\img\\lodge\\" />
+	<!-- <constructor-arg value="C:\\java-kosta\\final-workspace\\finalproject_danim\\src\\main\\webapp\\resources\\img\\lodge\\" /> -->
 	<!-- <constructor-arg value="C:\\Users\\kosta\\git\\danim\\finalproject_danim\\src\\main\\webapp\\resources\\img\\lodge\\" /> -->
 </bean>
 </beans>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -33,9 +33,9 @@ public class ExcelController
 		   // FileInputStream클래스의 인스턴스화 하여 파일객체를 얻어온다.
 //		   fi = new java.io.FileInputStream(new java.io.File("C:\\Users\\kosta\\git\\danim\\finalproject_danim\\src\\main\\webapp\\resources\\excel\\bus.xls"));
 			/*******유진 엑셀 경로*******/
-			fi = new java.io.FileInputStream(new java.io.File("C:\\java-kosta\\final-workspace\\finalproject_danim\\src\\main\\webapp\\resources\\excel\\bus.xls"));
+//			fi = new java.io.FileInputStream(new java.io.File("C:\\java-kosta\\final-workspace\\finalproject_danim\\src\\main\\webapp\\resources\\excel\\bus.xls"));
 			/*****************************/
-//			fi = new java.io.FileInputStream(new java.io.File("C:\\java-kosta\\spring-workspace2\\finalproject_danim\\src\\main\\webapp\\resources\\excel\\bus.xls"));
+			fi = new java.io.FileInputStream(new java.io.File("C:\\java-kosta\\spring-workspace2\\finalproject_danim\\src\\main\\webapp\\resources\\excel\\bus.xls"));
 		   Workbook workbook = Workbook.getWorkbook(fi);
 		   Sheet sheet = workbook.getSheet(0);                  // 첫번째 시트를 얻어옴
 
@@ -127,9 +127,9 @@ public class ExcelController
 		   // FileInputStream클래스의 인스턴스화 하여 파일객체를 얻어온다.
 //		   fi = new java.io.FileInputStream(new java.io.File("C:\\Users\\kosta\\git\\danim\\finalproject_danim\\src\\main\\webapp\\resources\\excel\\bus.xls"));
 			/*******유진 엑셀 경로*******/
-			fi = new java.io.FileInputStream(new java.io.File("C:\\java-kosta\\final-workspace\\finalproject_danim\\src\\main\\webapp\\resources\\excel\\train.xls"));
+//			fi = new java.io.FileInputStream(new java.io.File("C:\\java-kosta\\final-workspace\\finalproject_danim\\src\\main\\webapp\\resources\\excel\\train.xls"));
 			/*****************************/
-//			fi = new java.io.FileInputStream(new java.io.File("C:\\java-kosta\\spring-workspace2\\finalproject_danim\\src\\main\\webapp\\resources\\excel\\train.xls"));
+			fi = new java.io.FileInputStream(new java.io.File("C:\\java-kosta\\spring-workspace2\\finalproject_danim\\src\\main\\webapp\\resources\\excel\\train.xls"));
 		   Workbook workbook = Workbook.getWorkbook(fi);
 		   Sheet sheet = workbook.getSheet(0);                  // 첫번째 시트를 얻어옴
 

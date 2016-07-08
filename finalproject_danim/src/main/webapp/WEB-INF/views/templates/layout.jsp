@@ -25,7 +25,7 @@
 
 <script type="text/javascript" src="${initParam.root}resources/js/jquery-1.12.4.min.js"></script>
 
-<script src="${initParam.root}resources/js/jquery.js"></script>
+<%-- <script src="${initParam.root}resources/js/jquery.js"></script> --%>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js"></script>
 <script src="${initParam.root}resources/js/jquery-migrate-1.1.1.js"></script>
 <script src="${initParam.root}resources/js/script.js"></script>

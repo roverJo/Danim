@@ -45,9 +45,20 @@ $(document).ready(function(){
 	$("#foodshopFindForm").submit(function () {
 		$("#foodshopFindForm :input[name=area_name]").val($("#areaName").val());
 		$("#foodshopFindForm :input[name=detailarea_name]").val($("#detailareaName").val());
+		
+		if($("#foodshopFindForm :input[name=shopname]").val()==""){
+			alert("음식점 이름을 입력하세요");
+			return false;
+		}
+		if($("#foodshopFindForm :input[name=area_name]").val()==""){
+			alert("지역을 선택하세요");
+			return false;
+		}
+		if($("#foodshopFindForm :input[name=detailarea_name]").val()==""){
+			alert("상세지역을 선택하세요");
+			return false;
+		}
 	});
-	
-	
 });
 	
 </script>

@@ -60,9 +60,24 @@ $(document).ready(function(){
 			$("#lodgeFindForm :input[name=area_name]").val($("#areaName").val());
 			$("#lodgeFindForm :input[name=detailarea_name]").val($("#detailareaName").val());
 			$("#lodgeFindForm :input[name=lodgetype]").val($("#lodgeKind").val());
+			
+			if($("#lodgeFindForm :input[name=shopname]").val()==""){
+				alert("숙소 이름을 입력하세요");
+				return false;
+			}
+			if($("#lodgeFindForm :input[name=area_name]").val()==""){
+				alert("지역을 선택하세요");
+				return false;
+			}
+			if($("#lodgeFindForm :input[name=detailarea_name]").val()==""){
+				alert("상세지역을 선택하세요");
+				return false;
+			}
+			if($("#lodgeFindForm :input[name=lodgetype]").val()==""){
+				alert("숙박종류를 선택하세요");
+				return false;
+			}
 		});
-	
-	
 });
 	
 </script>
