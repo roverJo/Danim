@@ -106,7 +106,6 @@ public class CommController {
 			clvo.setId(mvo.getId());
 		}
 		int result = commService.updateLikePosted(clvo);
-//		System.out.println("[updateContentsLike]"+result);
 		return result;
 	}
 	

@@ -190,11 +190,11 @@
 	margin-top: 5px;
 	margin-bottom: 25px;
 }
-
+/* 
 #stuck_container > div > div > .navigation> nav > ul > li:target {
 	background-color: #ec9e9e;
 } 
-
+ */
 .sitemap>div>h3 {
 	border: solid;
 	border-top-color: rgba(255, 255, 255, 0.07);

@@ -20,6 +20,7 @@ $(document).ready(function(){
 	}); */
 	$("#resetBtn").click(function(){
 		$("#update_form")[0].reset();
+		$("#update_form input[name=title]").value("");
 	});
 })
 </script>

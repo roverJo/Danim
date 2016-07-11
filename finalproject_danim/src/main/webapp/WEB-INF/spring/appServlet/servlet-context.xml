@@ -35,7 +35,7 @@ class="org.springframework.web.servlet.view.UrlBasedViewResolver">
 <mvc:interceptors>
 	<mvc:interceptor>
 		<mvc:mapping path = "/login_*.do"/>
-		<bean class = "org.kosta.finalproject.controller.intercepter.LoginCheckIntercepter"/>
+		<bean class = "org.kosta.finalproject.controller.interceptor.LoginCheckInterceptor"/>
 	</mvc:interceptor>
 </mvc:interceptors>
 <!-- 사진 업로드 경로 설정 -->
