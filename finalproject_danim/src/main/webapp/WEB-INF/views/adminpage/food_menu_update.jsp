@@ -78,7 +78,7 @@ function readURL3(input) {
 
 <div class="addHeight"></div>
 <div class="container" align="center">
-<form id = "foodUpdateForm" action="food_menu_update_list.do" method="post" enctype="multipart/form-data" class="community" >
+<form id = "foodUpdateForm" action="food_menu_update_list.do" method="post" enctype="multipart/form-data" class="transparencyBG" >
 	<input type="hidden" name="food_name_list" value="">
 	<table class="table">
 		<tr>

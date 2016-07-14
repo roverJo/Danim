@@ -66,7 +66,7 @@
 </script>
 <div class="container_12" align="center">
 	<div class="addHeight"></div>
-		<div id="contact-area" class="community">
+		<div id="contact-area" class="transparencyBG">
 				<form id="updateForm" action="login_updateResult.do" method="post" class="input_form">
 				<div class="text-left">
 				아이디 <input type="text" name="id" value="${mvo.id}" class="form-control" readonly><br>

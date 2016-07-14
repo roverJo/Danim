@@ -175,10 +175,7 @@ function openPopup(el){
 					</tr>
 				</c:forEach>
 		</table>
-<!-- 	</div>
-	<div class="col-md-5"> -->
 		<h3>커뮤니티</h3>
-		<!-- <div class="community" id=""> -->
 			<table border="1" class="table community" id="commTable" style="border: 1px solid #cc6262;">
 				<c:forEach var="list" items="${commList}">
 					 <tr class="card-receep-header">
@@ -212,7 +209,6 @@ function openPopup(el){
 					</tr>
 				</c:forEach>
 			</table>
-		<!-- </div> -->
 			<c:if test="${sessionScope.mvo!=null}">
 				<button type="button" alt="글작성" id="commWrite" class="btn btn-warning btn-lg">글쓰기</button>
 			</c:if>

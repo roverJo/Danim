@@ -29,23 +29,11 @@ public class TotalSearchController {
 	private TrafficService trafficService;
 
 	@RequestMapping("totalSearch.do")
-	public ModelAndView totalSearch(String totalSearch, String lodgeNum, String busNum,String trainNum, String foodNum){
-		int lodge=4;
-		int food=4;
+	public ModelAndView totalSearch(String totalSearch, String busNum, String trainNum, String lodgeNum, String foodNum){
 		int bus=10;
 		int train=10;
-		if(lodgeNum!=null){
-			lodge = Integer.parseInt(lodgeNum);
-			if(lodge==0){
-				lodge=4;
-			}
-		}
-		if(foodNum!=null){
-			food = Integer.parseInt(foodNum);
-			if(food==0){
-				food=4;
-			}
-		}
+		int lodge=4;
+		int food=4;
 		if(busNum!=null){
 			bus=Integer.parseInt(busNum);
 			if(bus==0){
@@ -58,50 +46,47 @@ public class TotalSearchController {
 				train=10;
 			}
 		}
+		if(foodNum!=null){
+			food = Integer.parseInt(foodNum);
+			if(food==0){
+				food=4;
+			}
+		}
+		if(lodgeNum!=null){
+			lodge = Integer.parseInt(lodgeNum);
+			if(lodge==0){
+				lodge=4;
+			}
+		}
+		
 		ModelAndView mv=new ModelAndView();
-
-		/**/
-		//	    List<BestFoodVO> searchFoodList=bestFoodService.totalSearchFoodshop(totalSearch);
+		/* 숙박 & 음식 */
 		List<BestFoodVO> testFood=bestFoodService.totalSearchFoodshop(totalSearch);
 		List<BestFoodVO> searchFoodList=bestFoodService.searchFoodshop(new SearchVO(food, totalSearch));
 
-		//		List<LodgeVO> searchLodgeList=lodgeService.totalSearchLodgeshop(totalSearch);
 		List<LodgeVO> test=lodgeService.totalSearchLodgeshop(totalSearch);
 		List<LodgeVO> searchLodgeList=lodgeService.searchLodgeshop(new SearchVO(lodge, totalSearch));
-		/**/
-		List<BusVO> searchBusList=trafficService.totalSearchBus(new SearchVO(bus, totalSearch));
-		List<BusVO> testBus =trafficService.totalSearchBusTest(totalSearch);
 
+		/* 교통 */
+		List<BusVO> searchBusList=trafficService.totalSearchBus(new SearchVO(bus, totalSearch));
+		int busSize = trafficService.countBusList(totalSearch);
 
 		List<TrainVO> searchTrainList=trafficService.totalSearchTrain(new SearchVO(train, totalSearch));
 		List<TrainVO> testTrain=trafficService.totalSearchTrainTest(totalSearch);
 
 		mv.setViewName("total_totalSearchResult");
-		/**/
+		/* 숙박 & 음식 */
 		mv.addObject("foodList",searchFoodList);
 		mv.addObject("lodgeList",searchLodgeList);
 		mv.addObject("test",test);
 		mv.addObject("testFood",testFood);
-		/**/
+		
+		/* 교통 */
 		mv.addObject("busList",searchBusList);
-		mv.addObject("testBus",testBus);
+		mv.addObject("busSize",busSize);
 		mv.addObject("trainList",searchTrainList);
 		mv.addObject("testTrain",testTrain);
 
 		return mv;
-	}
-
-	//로그인 상태면 false
-	//로그아웃 상태면 true
-	@RequestMapping("total_checkLogin.do")
-	@ResponseBody
-	public boolean chkLogging(HttpServletRequest request){
-		Boolean flag = false;
-		HttpSession session = request.getSession(false);
-		MemberVO memberVO = (MemberVO) session.getAttribute("mvo");
-		if(memberVO == null){
-			flag = true;
-		}
-		return flag;
 	}
 }

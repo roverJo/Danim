@@ -135,6 +135,10 @@ public class TrafficServiceImpl implements TrafficService
 		return trafficDAO.totalSearchBus(svo);
 	}
 	
+	public int countBusList(String totalSearch){
+		return trafficDAO.countBusList(totalSearch);
+	}
+	
 	public List<BusVO> totalSearchBusTest(String totalSearch){
 		return trafficDAO.totalSearchBusTest(totalSearch);
 	}

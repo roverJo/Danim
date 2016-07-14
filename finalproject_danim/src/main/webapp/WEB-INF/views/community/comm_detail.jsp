@@ -52,12 +52,12 @@ $(document).ready(function() {
 						commentAdd+='<td style="width:1%"><span class="glyphicon glyphicon-arrow-right"></span></td>';
 						commentAdd+='<td style="width:99%">';
 						commentAdd+='<strong style="color: #009688;">'+reply.memberVO.nickname+'</strong>';
-						if("${sessionScope.mvo!=null }"){
-							if(comment.memberVO.id=="${sessionScope.mvo.id}"){
-								commentAdd+='<a style="cursor:pointer;" name="cEdit" title="'+reply.reply_no+'"> 수정</a>';
-								commentAdd+='| <a style="cursor:pointer;" name="cDel" title="'+reply.reply_no+'"> 삭제</a>';
-							}
+					if("${sessionScope.mvo!=null }"){
+						if(reply.memberVO.id=="${sessionScope.mvo.id}"){
+							commentAdd+='<a style="cursor:pointer;" name="cEdit" title="'+reply.reply_no+'"> 수정</a>';
+							commentAdd+='| <a style="cursor:pointer;" name="cDel" title="'+reply.reply_no+'"> 삭제</a>';
 						}
+					}
 						commentAdd+='<pre>'+reply.content+'<pre></td></tr>';
 						});//reply each
 					}//if
@@ -73,7 +73,6 @@ $(document).ready(function() {
 	
 	
 <%--***************************** 댓글 수정 Start ******************************--%>
-	/* $("#commentEditSubmit").click(function(){ */
 	$(document).on("click","#commentEditSubmit", function(){
 		var commentNo = $(this).attr("title");
 		var content = $(this).parent().parent().children().eq(0);
@@ -107,7 +106,7 @@ $(document).ready(function() {
 						commentAdd+='<td style="width:99%">';
 						commentAdd+='<strong style="color: #009688;">'+reply.memberVO.nickname+'</strong>';
 					if("${sessionScope.mvo!=null }"){
-						if(comment.memberVO.id=="${sessionScope.mvo.id}"){
+						if(reply.memberVO.id=="${sessionScope.mvo.id}"){
 							commentAdd+='<a style="cursor:pointer;" name="cEdit" title="'+reply.reply_no+'"> 수정</a> ';
 							commentAdd+='| <a style="cursor:pointer;" name="cDel" title="'+reply.reply_no+'"> 삭제</a>';
 						}
@@ -160,7 +159,7 @@ $(document).ready(function() {
 						commentAdd+='<td style="width:99%">';
 						commentAdd+='<strong style="color: #009688;">'+reply.memberVO.nickname+'</strong>';
 					if("${sessionScope.mvo!=null }"){
-						if(comment.memberVO.id=="${sessionScope.mvo.id}"){
+						if(reply.memberVO.id=="${sessionScope.mvo.id}"){
 							commentAdd+='<a style="cursor:pointer;" name="cEdit" title="'+reply.reply_no+'"> 수정</a> ';
 							commentAdd+='| <a style="cursor:pointer;" name="cDel" title="'+reply.reply_no+'"> 삭제</a>';
 						}
@@ -219,7 +218,7 @@ $(document).ready(function() {
 						commentAdd+='<td style="width:99%">';
 						commentAdd+='<strong style="color: #009688;">'+reply.memberVO.nickname+'</strong>';
 					if("${sessionScope.mvo!=null }"){
-						if(comment.memberVO.id=="${sessionScope.mvo.id}"){
+						if(reply.memberVO.id=="${sessionScope.mvo.id}"){
 							commentAdd+='<a style="cursor:pointer;" name="cEdit" title="'+reply.reply_no+'"> 수정</a> ';
 							commentAdd+='| <a style="cursor:pointer;" name="cDel" title="'+reply.reply_no+'"> 삭제</a>';
 						}
@@ -231,26 +230,6 @@ $(document).ready(function() {
 				
 				commentAdd+='</table>';
 				$("#commentTableDiv").html(commentAdd);
-				
-				/* commentChildText += '<tr name="commentChildCode">'+
-												'<td style="width:1%"><span class="glyphicon glyphicon-arrow-right"></span></td>'+
-												'<td style="width:99%">'+
-												'<strong>'+result.memberVO.nickname+'</strong> '+
-												'<a style="cursor:pointer;" name="cEdit" title="'+result.reply_no+'">수정</a> | '+
-												'<a style="cursor:pointer;" name="cDel" value="'+result.reply_no+'">삭제</a>'+
-												'<p>'+result.content+'</p>'+
-												'</td>'+
-												'</tr>';
-				              */   
-				//앞의 tr노드 찾기
-				//댓글 적는 에디터 삭제
-				//$("#commentEditor").remove();//여기에서 삭제를 해줘야 에디터tr을 안 찾는다.
-				//댓글을 타고 올라가며 부모 tr을 찾음
-				/* while(prevTr.attr("name")!="commentParentCode"){
-					prevTr = prevTr.prev();
-				}
-				prevTr.after(commentChildText);
-				*/
 			}//success
 		});//ajax
 	});//on
@@ -318,9 +297,6 @@ $(document).ready(function() {
 			var $commentNo = $(this).attr('title');
 			var content = $(this).siblings().filter("p");
 			var parentElement = $(this).parent();
-			//alert(parentElement.html())
-		   //댓글달기 창을 없앤다.
-		   //$("#commentEditor").remove();
 		   //부모의 하단에 댓글달기 창을 삽입
 		   var commentEditor = '<tr id="commentEditor">'+
 		                           '<td align="right">'+
@@ -341,8 +317,6 @@ $(document).ready(function() {
 			var $commentNo = $(this).attr('title');
 			var content = $(this).siblings().filter("p");
 			var parentElement = $(this).parent().parent();
-			//댓글달기 창을 없앤다.
-			//$("#commentEditor").remove();
 			//부모의 하단에 댓글달기 창을 삽입
 			var commentEditor = '<tr id="commentEditor">'+
 			                        '<td align="right">'+
@@ -394,62 +368,31 @@ $(document).ready(function() {
 	});
 </script>
 
-<!-- header -->
-<!-- <div class="modal-header">
-    닫기(x) 버튼
-  <button type="button" class="close" data-dismiss="modal">×</button>
-  header title
-  <h3 class="modal-title">상세내용</h3>
-</div> -->
-<!-- body -->
-<!-- <div class="modal-body"> -->
 <div class="addHeight"></div>
-<div class="container" id="commentTableDiv">
-<h5>상세 내용</h5>
-	<table class="list">
-		<tbody>			
-			<tr>
-				<td>${commVO.content }</td>
-			</tr>
-			<tr>
+<h5><a href="${initParam.root}community_list.do?rownum=5">←목록으로</a></h5>
+<div class="container" id="communityTableDiv">
+	<h3><span style="">${commVO.memberVO.nickname }</span></h3><br>
+	<span style="color: gray;">${commVO.timePosted }</span>
+	<hr>
+		${commVO.content }
+	<hr>
 			<c:if test="${commVO.memberVO.id==sessionScope.mvo.id }">
-				<td>
-				<div class="addHeight"></div>
-				<input type="button" id="contentUpdate" value="수정" class="btn btn-primary"><input type="button" id="contentDelete" value="삭제" class="btn btn-danger">
-				</td>
+				<input type="button" id="contentUpdate" value="수정" class="btn btn-primary"> <input type="button" id="contentDelete" value="삭제" class="btn btn-danger">
 			</c:if>		
-			</tr>
-		</tbody>
-	</table>
-<!-- </div> -->
 </div>
 	<div class="addHeight"></div>
-<div class="container" id="commentTableDiv">	
-<!-- <div class="modal-footer"> -->	
-	<!-- <table>
-	<thead>
-			<tr><th><h5>Comments</h5></th></tr>
-	</thead>
-	</table> -->
+<div class="container" id="communityTableDiv">	
 	<h5 style="text-align: left;">Comments <i class="fa fa-comment-o" aria-hidden="true"></i></h5>
 	<c:if test="${sessionScope.mvo!=null }">
 	<form id="commentForm">
-<!-- 	<table class="table table-condensed" style="text-align: left;">
-		 <tr>
-		     <td> -->
-		         <span class="form-inline" role="form">
-		             <textarea id="commentParentText" name="commentParentText" class="form-control" style="width:90%" rows="2" placeholder="댓글을 입력하세요"></textarea>
-		                 <!-- <div class="form-group"> -->
-		                     <button type="button" id="commentParentSubmit" name="commentParentSubmit" class="btn" style="background-color:#3db39e; color:white; height: 50px;">댓글달기</button>
-		                 <!-- </div> -->
-		         </span>
-		     <!-- </td>
-		 </tr>
-	</table> -->
+	    <span class="form-inline" role="form">
+	        <textarea id="commentParentText" name="commentParentText" class="form-control" style="width:90%" rows="2" placeholder="댓글을 입력하세요"></textarea>
+	        <button type="button" id="commentParentSubmit" name="commentParentSubmit" class="btn" style="background-color:#3db39e; color:white; height: 50px;">댓글달기</button>
+	    </span>
 	</form>
 	</c:if>
-	
-	<!-- <div id="commentTableDiv"> -->
+	<div class="hiddenHeight"></div>
+	<div id="commentTableDiv">
 	<table id="commentTable" class="table table-condensed" style="text-align: left;">
 		<c:forEach items="${commentList}" var="item">
 			<tr id="r1" name="commentParentCode" title="${item.comment_no}">
@@ -483,9 +426,8 @@ $(document).ready(function() {
 					</tr>
 				</c:forEach>
 			</c:if>
-					<!-- </table> -->
 		</c:forEach>
 	</table>
-	<!-- </div> -->
+	</div>
 <!-- </div> -->
 </div>

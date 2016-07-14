@@ -118,11 +118,8 @@ public class CommController {
 	public ModelAndView findCommByNo(int commNo){
 		CommunityVO cvo = commService.findCommByNo(commNo);
 		List<CommentVO> commentList = commService.getCommentList(commNo);
-//		List<ReplyVO> replyList = commService.getReplyList(commNo);
-//		ModelAndView mv = new ModelAndView("community/comm_detail","commVO",cvo);
 		ModelAndView mv = new ModelAndView("community_detail","commVO",cvo);
 		mv.addObject("commentList",commentList);
-//		mv.addObject("replyList",replyList);
 		return mv;
 	}
 

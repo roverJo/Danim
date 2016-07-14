@@ -57,7 +57,7 @@ function readURL3(input) {
 <div class="addHeight"></div>
 <div class="container" align="center">
 <!-- <h2 align="center">메뉴 수정</h2> -->
-<form id = "lodgePicUpdateForm" action="lodge_pic_update_list.do" method="post" enctype="multipart/form-data" class="community">
+<form id = "lodgePicUpdateForm" action="lodge_pic_update_list.do" method="post" enctype="multipart/form-data" class="transparencyBG">
 
 	<table class="table">
 		<tr>

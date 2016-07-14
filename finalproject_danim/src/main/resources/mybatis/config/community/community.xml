@@ -11,12 +11,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
  	<select id="getCommlist" resultMap="commRM">
- 		<!-- select comm_no,timePosted, content,id from(
-			select comm_no,timePosted, content,id,ceil(rownum/#{value}) as page from (
-				select comm_no,to_char(timePosted, 'mm-dd am hh:mi:ss') as timePosted, content,id from community
-				order by comm_no desc
-			)
-		)where page=1 -->
 		select c.comm_no,c.timePosted, c.content, l.likePosted,m.id,m.nickname from(
 			select comm_no,timePosted, content, id,ceil(rownum/#{value}) as page from (
 				select comm_no,to_char(timePosted, 'mm-dd am hh:mi:ss') as timePosted, content, id from community
@@ -137,16 +131,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<select id="getLikeRank" resultType="commLikeVO">
-		<!-- select comm_no, likepost as likePosted, rank, content from( -->
 		select comm_no, heart, content, nickname from(
-		select r.comm_no, r.heart, rank() over (order by r.heart desc) as rank, c.content, m.id, m.nickname 
-		from (
+		select r.comm_no, r.heart, rank() over (order by r.heart desc) as rank, c.content, m.id, m.nickname from (
 			select comm_no, sum(likePosted) as heart
 			from commLike
 			group by comm_no
 		) r, community c, member m
 		where r.comm_no=c.comm_no and m.id=c.id
-		)
-		where rank <![CDATA[<]]>6
+		) where rank <![CDATA[<]]>6
 	</select>
 </mapper>

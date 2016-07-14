@@ -46,6 +46,8 @@ public interface TrafficService
 	
 	public List<BusVO> totalSearchBus(SearchVO svo);
 	
+	public int countBusList(String totalSearch);
+	
 	public List<BusVO> totalSearchBusTest(String totalSearch);
 	
 	public List<TrainVO> totalSearchTrain(SearchVO svo);

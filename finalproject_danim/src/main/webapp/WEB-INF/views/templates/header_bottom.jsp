@@ -12,6 +12,7 @@
 				return false; 
 			} */
 		});
+		if("${sessionScope.mvo}"!=""){
 		var rtn = "${sessionScope.mvo.id}";
 		$.ajax({
 			type:"post",
@@ -21,6 +22,7 @@
 				$("#noRead").text(jsonData); 
 			}
 			});
+		}
 	});
 </script>
 <div align="center">

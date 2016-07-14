@@ -67,7 +67,7 @@ $(document).ready(function(){
 				</tr>
 				<tr>
 					<td colspan="2" align="center">
-						<input type="button" class="btn btn-success" id="save" value="확인"/>
+						<input type="button" class="btn btn-success" id="save" value="수정"/>
 						<input type="button" class="btn btn-default" id="reset" value="초기화"/>
 					</td>
 				</tr>

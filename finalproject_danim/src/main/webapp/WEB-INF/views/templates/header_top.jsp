@@ -13,7 +13,7 @@
               <ul class="sf-menu">
                <li id="home"><a href="${initParam.root }home.do#home">Home</a></li>
                <li id="notice"><a href="${initParam.root }notice_list.do?pageNo=1#notice">Notice</a></li>
-               <li id="community"><a href="${initParam.root }community_list.do?rownum=5">Community</a></li>
+               <li id="community1"><a href="${initParam.root }community_list.do?rownum=5">Community</a></li>
              <c:if test="${sessionScope.mvo!=null }">
                <li id="zzim"><a href="${initParam.root}login_zimList.do#zzim">ZZim</a></li>
                <li id="cart"><a href="${initParam.root}login_cartList.do#cart">Cart</a></li>

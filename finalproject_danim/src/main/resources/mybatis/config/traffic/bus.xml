@@ -56,6 +56,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		and t.terminal_name like '%'||#{value}||'%' or b.end_area like '%'||#{value}||'%'
  	</select>
  	
+ 	<select id="countBusList" resultType="int">
+ 		select count(*) from bus b, terminal t 
+		where b.terminal_no = t.terminal_no  
+		and t.terminal_name like '%'||#{value}||'%' or b.end_area like '%'||#{value}||'%'
+ 	</select>
  	 	<!-- 통합검색 -->
  	 <select id="totalSearchBus" resultMap="busRM" parameterType="searchVO">
  		select bus_no,operation_time,end_area,terminal_no,terminal_name,price,leadtime,bustype from(
@@ -67,6 +72,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				)
 	 		where terminal_name like '%' || #{searchWord} || '%' or end_area like '%' || #{searchWord} || '%'
  		) where page=1
- 		
  	</select>
 </mapper>

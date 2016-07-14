@@ -9,12 +9,6 @@
 	height: 30px;
 }
 
-.community {
-	/* background-color: #fdfdcc; */
-	background-color: rgba(255, 255, 255, 0.63);
-	/* padding: 10px; */
-}
-
 .adminTable {
 	background-color: #fdfdcc;
 }
@@ -205,10 +199,10 @@
 
 #commentDiv{
 	width: 900px;
-	background-color: rgba(255, 255, 255, 0.63);	
+	/* background-color: rgba(255, 255, 255, 0.63); */	
 	text-align: left;
 }
-#commentTableDiv{
+#commentTableDiv, #communityTableDiv, .transparencyBG{
 	background-color: rgba(255, 255, 255, 0.63);
 }
 #commentTable > tbody >  tr > td > strong {

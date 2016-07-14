@@ -34,37 +34,24 @@ function loadTrainData(){
 }
 
 $(document).ready(function() {
-	/* 
-	if($(window).scrollHeight - $(window).scrollTop){
-	alert(typeof document.body.style.maxHeight);
-	}
-	 */
-	$("#busForm").on("change", "input[type='radio'][name=traffic_no]", function () {
-		if($("#busForm input[type='radio'][name=traffic_no]:checked").length == 1)
-		{
+	$("#busForm").on("change", "input[type='radio'][name=traffic_no]", function() {
+		if($("#busForm input[type='radio'][name=traffic_no]:checked").length == 1){
 			var flag = confirm("찜목록에 넣으시겠습니까?");
-			if(flag == true)
-			{
+			if(flag == true){
 				$("#busForm input[name=no]").val($("#busForm input[type='radio'][name=traffic_no]:checked").val());
 				$("#busForm").submit();
-			}
-			else
-			{
+			}else{
 				$(this).prop("checked",false);
 			}
 		}
 	});
-	$("#trainForm").on("change", "input[type='radio'][name=traffic_no]", function () {
-		if($("#trainForm input[type='radio'][name=traffic_no]:checked").length == 1)
-		{
+	$("#trainForm").on("change", "input[type='radio'][name=traffic_no]", function() {
+		if($("#trainForm input[type='radio'][name=traffic_no]:checked").length == 1){
 			var flag = confirm("찜목록에 넣으시겠습니까?");
-			if(flag == true)
-			{
+			if(flag == true){
 				$("#trainForm input[name=no]").val($("#trainForm input[type='radio'][name=traffic_no]:checked").val());
 				$("#trainForm").submit();
-			}
-			else
-			{
+			}else{
 				$(this).prop("checked",false);
 			}
 		}
@@ -76,102 +63,96 @@ $(document).ready(function() {
 <%--********************** 버스 List Start **********************--%>
 		<div class="hiddenHeight" id="goToTraffic"></div>
 		<h2>교통</h2>
-<form id="busForm" method="get" action="login_checkTypeByTraffic.do">
-<input type="hidden" name="no" value="">
-<input type="hidden" name="type" value="bus">
 
-		<div class="hiddenHeight" id="goToBus"></div>
-		<h3>버스</h3>
-		<!-- <form id="busSearchList"> -->
-		<c:choose>
-		<c:when test="${empty requestScope.busList }">
-		'${param.totalSearch }'에 해당하는 결과가 없습니다
-		</c:when>
-		<c:otherwise>
-		<table class="table custab">
-			<tr class="box-black">
-				<th>출발시간</th>
-				<th>출발터미널</th>
-				<th>도착지역</th>
-				<th>가격</th>
-				<th>소요시간</th>
-				<th>좌석</th>
-				<c:if test="${sessionScope.mvo!=null }">
-				<th>선택</th>
-				</c:if>
-			</tr>
-			<c:forEach items="${requestScope.busList }" var="list">
-				<tr>
-					<td>${list.operation_time}</td>
-					<td>${list.terminalVO.terminal_name}</td>
-					<td>${list.end_area}</td>
-					<td>${list.price}</td>
-					<td>${list.leadTime}</td>
-					<td>${list.busType}</td>
+		<form id="busForm" method="get" action="login_checkTypeByTraffic.do">
+			<input type="hidden" name="no" value="">
+			<input type="hidden" name="type" value="bus">
+			<div class="hiddenHeight" id="goToBus"></div>
+			<h3>버스</h3>
+			<c:choose>
+			<c:when test="${empty requestScope.busList }">
+			'${param.totalSearch }'에 해당하는 결과가 없습니다
+			</c:when>
+			<c:otherwise>
+			<table class="table custab">
+				<tr class="box-black">
+					<th>출발시간</th>
+					<th>출발터미널</th>
+					<th>도착지역</th>
+					<th>가격</th>
+					<th>소요시간</th>
+					<th>좌석</th>
 					<c:if test="${sessionScope.mvo!=null }">
-					<td align="center"><input type="radio" name ="traffic_no" value="${list.bus_no}"></td>
+					<th>선택</th>
 					</c:if>
 				</tr>
-			</c:forEach>
-		</table>
-		<c:if test="${requestScope.busList.size()<testBus.size()}">
-			<input type="button" class="btn btn-danger btn-lg" value="더보기" onclick="loadBusData()">
-		</c:if>
-		</c:otherwise>
-		</c:choose>
+				<c:forEach items="${requestScope.busList }" var="list">
+					<tr>
+						<td>${list.operation_time}</td>
+						<td>${list.terminalVO.terminal_name}</td>
+						<td>${list.end_area}</td>
+						<td>${list.price}</td>
+						<td>${list.leadTime}</td>
+						<td>${list.busType}</td>
+						<c:if test="${sessionScope.mvo!=null }">
+						<td align="center"><input type="radio" name ="traffic_no" value="${list.bus_no}"></td>
+						</c:if>
+					</tr>
+				</c:forEach>
+			</table>
+			<c:if test="${requestScope.busList.size()<busSize}">
+				<input type="button" class="btn btn-danger btn-lg" value="더보기" onclick="loadBusData()">
+			</c:if>
+			</c:otherwise>
+			</c:choose>
 		</form>
-	<!-- </div> -->
 <%--********************** 버스 List End **********************--%>
 
-	<!-- <div class="col-md-9"> -->
 <%--********************** 기차 List Start **********************--%>
 		<div class="hiddenHeight" id="goToTrain"></div>
 		<h3>기차</h3>
-		<!-- <form id="trainSearchList"> -->
-<form id="trainForm" method="get" action="login_checkTypeByTraffic.do">
-<input type="hidden" name="no" value="">
-<input type="hidden" name="type" value="train">
-		<c:choose>
-		<c:when test="${empty requestScope.trainList }">
-		'${param.totalSearch }'에 해당하는 결과가 없습니다
-		</c:when>
-		<c:otherwise>
-		<table class="table custab">
-			<tr class="box-black">
-				<th>출발시간</th>
-				<th>출발역</th>
-				<th>도착지역</th>
-				<th>가격</th>
-				<th>소요시간</th>
-				<th>기차종류</th>
-				<c:if test="${sessionScope.mvo!=null }">
-				<th>선택</th>
-				</c:if>
-			</tr>
-			<c:forEach items="${requestScope.trainList }" var="list">
-				<tr>
-					<td>${list.operation_time}</td>
-					<td>${list.stationVO.station_name}</td>
-					<td>${list.end_area}</td>
-					<td>${list.price}</td>
-					<td>${list.leadTime}</td>
-					<td>${list.trainType}</td>
+		<form id="trainForm" method="get" action="login_checkTypeByTraffic.do">
+			<input type="hidden" name="no" value="">
+			<input type="hidden" name="type" value="train">
+			<c:choose>
+			<c:when test="${empty requestScope.trainList }">
+			'${param.totalSearch }'에 해당하는 결과가 없습니다
+			</c:when>
+			<c:otherwise>
+			<table class="table custab">
+				<tr class="box-black">
+					<th>출발시간</th>
+					<th>출발역</th>
+					<th>도착지역</th>
+					<th>가격</th>
+					<th>소요시간</th>
+					<th>기차종류</th>
 					<c:if test="${sessionScope.mvo!=null }">
-					<td align="center"><input type="radio" name ="traffic_no" value="${list.train_no}"></td>
+					<th>선택</th>
 					</c:if>
 				</tr>
-			</c:forEach>
-		</table>
-		<c:if test="${requestScope.trainList.size()<testTrain.size()}">
-			<input type="button" class="btn btn-danger btn-lg" value="더보기" onclick="loadTrainData()">
-		</c:if>
-		</c:otherwise>
-		</c:choose>
-</form>
-	<!-- </div> -->
+				<c:forEach items="${requestScope.trainList }" var="list">
+					<tr>
+						<td>${list.operation_time}</td>
+						<td>${list.stationVO.station_name}</td>
+						<td>${list.end_area}</td>
+						<td>${list.price}</td>
+						<td>${list.leadTime}</td>
+						<td>${list.trainType}</td>
+						<c:if test="${sessionScope.mvo!=null }">
+						<td align="center"><input type="radio" name ="traffic_no" value="${list.train_no}"></td>
+						</c:if>
+					</tr>
+				</c:forEach>
+			</table>
+			<c:if test="${requestScope.trainList.size()<testTrain.size()}">
+				<input type="button" class="btn btn-danger btn-lg" value="더보기" onclick="loadTrainData()">
+			</c:if>
+			</c:otherwise>
+			</c:choose>
+		</form>
 <%--********************** 기차 List End **********************--%>
 
-	<!-- <div class="col-md-9" id="food"> -->
 <%--********************** 음식 List Start **********************--%>
 		<div class="hiddenHeight" id="goToFood"></div>
 		<h2>음식</h2>

@@ -56,3 +56,16 @@ select bus_no,operation_time,end_area,terminal_no,terminal_name,price,leadtime,b
 	
 	select l.lodge_no,l.shopinfo,l.local_area,l.area_name,l.shopname,l.lodgetype,l.detailarea_name, p.picture_no, p.picture_name 
 		from lodge l, lodgepicture p where l.lodge_no=p.lodge_no and p.picture_name like '%_a.jpg%'
+		
+
+select count(*) from bus b, terminal t 
+where b.terminal_no = t.terminal_no  
+and t.terminal_name like '%'||'서울'||'%' or b.end_area like '%'||'서울'||'%'
+
+select c.comm_no,c.timePosted, c.content, l.likePosted,m.id,m.nickname from(
+			select comm_no,timePosted, content, id,ceil(rownum/5) as page from (
+				select comm_no,to_char(timePosted, 'mm-dd am hh:mi:ss') as timePosted, content, id from community
+				order by comm_no desc
+			)
+		)c, (select comm_no, count(likePosted) as likePosted from commLike GROUP BY comm_no) l, member m 
+		where l.comm_no(+)=c.comm_no and m.id=c.id and c.page=1 order by c.comm_no desc

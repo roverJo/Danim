@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="container_12" align="center">
-<div class="addHeight"></div>
+	<div class="addHeight"></div>
 	<div id="notice-list">
 		<h3>공지사항</h3>
 		<table class="table custab">

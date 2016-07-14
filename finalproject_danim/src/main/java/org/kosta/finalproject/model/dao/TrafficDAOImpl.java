@@ -134,6 +134,9 @@ public class TrafficDAOImpl implements TrafficDAO
 	public List<BusVO> totalSearchBus(SearchVO svo){
 		return template.selectList("bus.totalSearchBus",svo);
 	}
+	public int countBusList(String totalSearch){
+		return template.selectOne("bus.countBusList",totalSearch);
+	}
 	
 	public List<BusVO> totalSearchBusTest(String totalSearch){
 		return template.selectList("bus.totalSearchBusTest",totalSearch);

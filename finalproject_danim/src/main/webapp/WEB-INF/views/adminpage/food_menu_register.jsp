@@ -76,7 +76,7 @@ $(document).ready(function(){
 <div class="container">
 <div class="foodDiv">
 
-<form id="food_menu_regiForm" action="foodmenu_multi_fileupload.do" method="post" enctype="multipart/form-data" class="community">
+<form id="food_menu_regiForm" action="foodmenu_multi_fileupload.do" method="post" enctype="multipart/form-data" class="transparencyBG">
 	<table class="table">
 		<tr>
 <c:choose>
